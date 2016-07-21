@@ -1,0 +1,17 @@
+# Mysql
+mysql_host =
+mysql_user =
+mysql_password =
+mysql_db =
+
+# PostgreSql
+pgsql_host =
+pgsql_user =
+pgsql_password =
+pgsql_db =
+
+# Informix
+informix_host =
+informix_user =
+informix_password =
+informix_db = 

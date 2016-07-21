@@ -1,6 +1,7 @@
 .idea/
 unicen-promoting.i*
 gradle/
+settings.conf
 
 # Created by https://www.gitignore.io/api/eclipse,gradle,java
 
