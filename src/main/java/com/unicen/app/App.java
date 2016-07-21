@@ -20,12 +20,7 @@ public class App
     {
         try {
             // Load settings
-            Properties applicationProps = new Properties();
-            InputStream in = new FileInputStream("settings.conf");
-            applicationProps.load(in);
-            in.close();
-            // Global
-            Config.setProperties( applicationProps );
+            Config.loadProperties(new FileInputStream("settings.conf"));
 
             // Start main window
             mw.main(args);
