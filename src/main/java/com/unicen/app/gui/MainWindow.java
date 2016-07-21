@@ -3,9 +3,12 @@ package com.unicen.app.gui;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
+import com.unicen.app.App;
+import com.unicen.app.indicators.Factory;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashMap;
 
 /**
  * Created by dscafati on 7/15/16.
@@ -33,6 +36,29 @@ public class MainWindow extends Component {
     }
 
     private void createUIComponents() {
+        // Load indicators
+        HashMap<String, String> indicators = Factory.listIndicators();
+        String[] indicatorsKeysArray = indicators.keySet().toArray(new String[0]);
+
+        // Set indicators on view
+        DefaultListModel defaultListModel = new DefaultListModel();
+        for (String i : indicators.keySet()) {
+            defaultListModel.addElement(indicators.get(i));
+        }
+        indicatorsList = new JList();
+
+        indicatorsList.setModel(defaultListModel);
+        indicatorsList.addListSelectionListener(listSelectionEvent -> {
+            if (!listSelectionEvent.getValueIsAdjusting()) {
+                String selectedIndicatorKey = indicatorsKeysArray[listSelectionEvent.getFirstIndex()];
+                try {
+                    Factory.get(selectedIndicatorKey).evaluateAll();
+                } catch (Exception e) {
+                    App.throwError(e);
+                }
+            }
+
+        });
     }
 
     {
@@ -52,13 +78,13 @@ public class MainWindow extends Component {
     private void $$$setupUI$$$() {
         createUIComponents();
         mainPanel = new JPanel();
-        tabContainer=new JTabbedPane();
-        indicatorsPanel = new JPanel();
         mainPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        tabContainer = new JTabbedPane();
         mainPanel.add(tabContainer, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(200, 200), null, 0, false));
+        indicatorsPanel = new JPanel();
         indicatorsPanel.setLayout(new GridLayoutManager(2, 2, new Insets(0, 0, 0, 0), -1, -1));
         tabContainer.addTab("Indicators", null, indicatorsPanel, "Indicators values");
-        indicatorsList = new JList();
+        indicatorsList.setSelectionMode(0);
         indicatorsPanel.add(indicatorsList, new GridConstraints(0, 0, 2, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50), null, 0, false));
         indicatorsTable = new JTable();
         indicatorsTable.setAutoCreateRowSorter(true);

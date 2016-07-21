@@ -2,17 +2,15 @@ package com.unicen.app;
 
 
 import com.unicen.app.gui.MainWindow;
-import com.unicen.app.indicators.IndicatorAbstract;
+import com.unicen.app.indicators.Indicator;
 
 import javax.swing.*;
 import java.io.FileInputStream;
-import java.io.InputStream;
-import java.util.Properties;
 
 
 public class App
 {
-    private IndicatorAbstract[] indicators;
+    private Indicator[] indicators;
     private static MainWindow mw;
 
 
@@ -25,11 +23,12 @@ public class App
             // Start main window
             mw.main(args);
         } catch (Exception e) {
-            throwError(e.getMessage());
+            e.printStackTrace();
+            throwError(e);
         }
     }
 
-    public static void throwError(String message) {
-        JOptionPane.showMessageDialog(null, message);
+    public static void throwError(Exception e) {
+        JOptionPane.showMessageDialog(null, e.getMessage());
     }
 }
