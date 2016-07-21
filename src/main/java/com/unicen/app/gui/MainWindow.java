@@ -10,7 +10,7 @@ import java.awt.*;
 /**
  * Created by dscafati on 7/15/16.
  */
-public class MainWindow {
+public class MainWindow extends Component {
     private JPanel mainPanel;
     private JTabbedPane tabContainer;
     private JPanel indicatorsPanel;
