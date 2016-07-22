@@ -1,11 +1,13 @@
 package com.unicen.app.indicators;
 
-public class Response {
-    private String schoolId;
-    private String schoolName;
-    private Float value;
+import java.util.DoubleSummaryStatistics;
 
-    public Response(String schoolId, String schoolName, Float value) {
+public class Response {
+    private Integer schoolId;
+    private String schoolName;
+    private Double value;
+
+    public Response(Integer schoolId, String schoolName, Double value) {
         this.schoolId = schoolId;
         this.schoolName = schoolName;
         this.value = value;

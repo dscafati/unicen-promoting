@@ -5,10 +5,12 @@ import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 import com.unicen.app.App;
 import com.unicen.app.indicators.Factory;
+import com.unicen.app.indicators.Response;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.HashMap;
+import java.util.*;
+import java.util.List;
 
 /**
  * Created by dscafati on 7/15/16.
@@ -26,6 +28,7 @@ public class MainWindow extends Component {
     private JTable mcdmTable;
     private JButton mcdmShowChartButton;
     private JButton indicatorsShowChartButton;
+    private JProgressBar progressBar1;
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("MainWindow");
@@ -50,12 +53,17 @@ public class MainWindow extends Component {
         indicatorsList.setModel(defaultListModel);
         indicatorsList.addListSelectionListener(listSelectionEvent -> {
             if (!listSelectionEvent.getValueIsAdjusting()) {
+                mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
                 String selectedIndicatorKey = indicatorsKeysArray[listSelectionEvent.getFirstIndex()];
                 try {
-                    Factory.get(selectedIndicatorKey).evaluateAll();
+                    List<Response> result = Factory.get(selectedIndicatorKey).evaluateAll();
+
                 } catch (Exception e) {
                     App.throwError(e);
+                } finally {
+                    mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
                 }
+
             }
 
         });
