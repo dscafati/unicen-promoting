@@ -9,12 +9,14 @@ import groovy.sql.Sql;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
+
 import java.util.List;
 
 public class Facade {
     private Script script;
-    private HashMap<String, List<Response>> cache;
+    private SimpleDiskCache cache;
+
+  //  private CacheAccess<String, List<Response>> cache = null;
 
     /**
      * Constructor
@@ -22,7 +24,8 @@ public class Facade {
      * Initializes DB and load Script File
      */
     private Facade() throws IOException {
-        this.cache = new HashMap<String, List<Response>>();
+        // Initialize Cache
+        this.cache = SimpleDiskCache.open(new File("cache"), 1,262144);
         // Intialize DBs
         Sql mysqlDB = null, pgsqlDB = null, informixDB = null;
         // Mysql
@@ -82,11 +85,13 @@ public class Facade {
         return instance;
     }
 
-    public List<Response> getAverage() {
-        if (this.cache.containsKey("average")) {
-            return this.cache.get("average");
+    public List<Response> getAverage() throws IOException{
+        if (this.cache.contains("average")) {
+            return this.cache.getResponse("average");
         } else {
-            return (List<Response>) script.invokeMethod("getAllAverageIndicator", null);
+            List<Response> result = (List<Response>) script.invokeMethod("getAllAverageIndicator", null);
+            this.cache.putResponse("average", result);
+            return result;
         }
     }
 

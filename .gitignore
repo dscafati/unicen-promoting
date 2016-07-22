@@ -2,6 +2,7 @@
 unicen-promoting.i*
 gradle/
 settings.conf
+cache/
 
 # Created by https://www.gitignore.io/api/eclipse,gradle,java
 

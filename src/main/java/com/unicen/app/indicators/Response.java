@@ -12,4 +12,16 @@ public class Response {
         this.schoolName = schoolName;
         this.value = value;
     }
+
+    public Integer getSchoolId() {
+        return schoolId;
+    }
+
+    public String getSchoolName() {
+        return schoolName;
+    }
+
+    public Double getValue() {
+        return value;
+    }
 }
