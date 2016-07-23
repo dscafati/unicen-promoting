@@ -1,6 +1,7 @@
 package com.unicen.app.indicators;
 
 import java.util.DoubleSummaryStatistics;
+import java.util.Vector;
 
 public class Response {
     private Integer schoolId;
@@ -23,5 +24,12 @@ public class Response {
 
     public Double getValue() {
         return value;
+    }
+
+    public Vector<Object> asVector(){
+        Vector<Object> v = new Vector<>();
+        v.add(this.getSchoolName());
+        v.add(this.getValue());
+        return v;
     }
 }
