@@ -67,7 +67,7 @@ public class Facade {
 
         GroovyShell shell = new GroovyShell(binding);
 
-        this.script = shell.parse(new File("model_scripts/model.scr"));
+        this.script = shell.parse(new File("model_scripts/script.groovy"));
 
         //mysqlDB.close();
         //pgsqlDB.close();
