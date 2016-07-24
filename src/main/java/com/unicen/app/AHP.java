@@ -18,6 +18,7 @@ public class AHP {
 	 * names: <Id escuela, nombre>. Para mapear el nombre y no tener que buscar en una
 	 * lista de response todo el tiempo
 	 */
+	
 	private HashMap <Integer, ArrayList<Double>> elements;
 	private HashMap <Integer, String> names;
 	private List<Indicator> indicators = new ArrayList<Indicator>();
@@ -139,8 +140,20 @@ public class AHP {
 			priorityVector[i] = priorityVector[i]/n;
 		
 		/*
-		 * The priority vector is already calculated. Now 
+		 * The priority vector is already calculated. Now distributing the
+		 * probability values across the elements map
 		 */
+		for (int i=0; i<n; i++) {
+			Response r = responses.get(i);
+			elements.get(r.getSchoolId()).add(new Double(priorityVector[i]));
+			
+			/*
+			 * Aca estoy agregandole a la escuela el valor de probabilidad asociado al
+			 * indicador actual. No hace falta indicar posicion en la lista, porque se agrega
+			 * al final y se hace en orden. Asi que la probailidad del indicador "i" va a quedar en
+			 * la posicion "i" de su lista
+			 */
+		}
 	}
 	
 	/*
@@ -148,9 +161,15 @@ public class AHP {
 	 * busca en la hash, obtiene sus probabilidades para cada indicador, y calcula
 	 * la probabilidad como la combinación lineal de los vectores
 	 */
-	private double getProbability (String element) {
+	private double getProbability (Integer elementId) {
+		double result = 0;
+		ArrayList<Double> elementProbabilities = elements.get(elementId);
 		
-		return 0;
+		//linear combination
+		for (int i=0; i<elementProbabilities.size(); i++)
+			result += elementProbabilities.get(i).doubleValue() * indicatorsPriorityVector[i];
+		
+		return result;
 	}
 	
 	public List<Decision> calculateDecision () {
@@ -160,18 +179,15 @@ public class AHP {
 		for (int i=0; i<indicators.size(); i++) 
 			calculateVectorForIndicator(i);
 		
-		/*for (String key : elements.keySet()) {
-			decision.add(new Decision (key, this.getProbability(key)));		
-		}*/
+		//se calcula la decision final y de paso se crea la lista a devolver
+		for (Integer id : elements.keySet()) {
+			decision.add(new Decision (id, names.get(id) ,this.getProbability(id)));		
+		}
 		
 		Collections.sort(decision);
 		
 		return decision;
 	}
 	
-	
-	
-	
-	
-	
+					
 }

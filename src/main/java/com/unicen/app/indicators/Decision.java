@@ -1,21 +1,23 @@
 package com.unicen.app.indicators;
 
 
-public class Decision implements Comparable {
-	private String school;
+public class Decision implements Comparable<Decision> {
+	private String schoolName;
+	private Integer schoolId;
 	private double probability;
 	
-	public Decision (String school, double probability) {
-		this.setSchool(school);
+	public Decision (Integer schoolId, String schoolName,double probability) {
+		this.setSchoolId(schoolId);
+		this.setSchoolName(schoolName);
 		this.setProbability(probability);
 	}
 
-	public String getSchool() {
-		return school;
+	public String getSchoolName() {
+		return schoolName;
 	}
 
-	public void setSchool(String school) {
-		this.school = school;
+	public void setSchoolName(String schoolName) {
+		this.schoolName = schoolName;
 	}
 
 	public double getProbability() {
@@ -27,13 +29,20 @@ public class Decision implements Comparable {
 	}
 
 	@Override
-	public int compareTo(Object o) {
-		Decision other = (Decision)o;
-		if (this.getProbability() < other.getProbability())
+	public int compareTo(Decision o) {
+		if (this.getProbability() < o.getProbability())
 			return -1;
-		if (this.getProbability() > other.getProbability())
+		if (this.getProbability() > o.getProbability())
 			return 1;
 		return 0;
+	}
+
+	public Integer getSchoolId() {
+		return schoolId;
+	}
+
+	public void setSchoolId(Integer schoolId) {
+		this.schoolId = schoolId;
 	}
 	
 	
