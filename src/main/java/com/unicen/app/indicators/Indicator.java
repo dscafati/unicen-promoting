@@ -6,6 +6,9 @@ import java.util.List;
 
 public abstract class Indicator {
     private String name;
+    
+    //@todo ver como setear el criterio. Si es por constructor o setter
+    private Criterion criterion;
 
     public static final String AS_PIE = "pie";
     public static final String AS_BAR = "bar";
@@ -16,6 +19,26 @@ public abstract class Indicator {
 
     protected void setName(String name) {
         this.name = name;
+    }
+    
+    public boolean isBetter (double value1, double value2) {
+    	return criterion.isBetter(value1, value2);
+    }
+    
+    public double getMatrixComparisonValue(double value1, double value2) {
+    	double matrixValue = 0;
+    	
+    	if (value1>value2) 
+    		matrixValue = value1/value2;
+    	else
+    		matrixValue = value2/value1;
+    	
+    	if (this.isBetter(value1, value2))
+    		return matrixValue;
+    	else
+    		return (1/matrixValue);
+    	
+    	
     }
 
     public abstract List<Response> evaluateAll() throws Exception;
