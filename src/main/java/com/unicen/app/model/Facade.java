@@ -69,9 +69,6 @@ public class Facade {
 
         this.script = shell.parse(new File("model_scripts/script.groovy"));
 
-        //mysqlDB.close();
-        //pgsqlDB.close();
-        //informixDB.close();
     }
 
 
@@ -91,6 +88,16 @@ public class Facade {
         } else {
             List<Response> result = (List<Response>) script.invokeMethod("getAllAverageIndicator", null);
             this.cache.putResponse("average", result);
+            return result;
+        }
+    }
+
+    public List<Response> getProgress() throws IOException{
+        if (this.cache.contains("progress")) {
+            return this.cache.getResponse("progress");
+        } else {
+            List<Response> result = (List<Response>) script.invokeMethod("getAverageDegreeOfProgress", null);
+            this.cache.putResponse("progress", result);
             return result;
         }
     }

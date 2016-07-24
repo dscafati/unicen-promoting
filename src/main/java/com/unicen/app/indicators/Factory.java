@@ -21,6 +21,7 @@ public class Factory {
 
         // List of indicators
         indicators.put("average", new AverageIndicator());
+        indicators.put("progress", new ProgressIndicator());
 
     }
 

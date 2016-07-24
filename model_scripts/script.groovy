@@ -33,4 +33,36 @@ def getAllAverageIndicator(){
      return ret
 }
 
+def getAverageDegreeOfProgress(){
+    def ret = new ArrayList<Response>()
+
+    // Select schools with students
+    mysqlDB.eachRow('''
+        SELECT
+        c.nombre as nombre,
+        c.colegio as colegio,
+        count(*) as nstudents
+        FROM sga_coleg_sec c
+        JOIN sga_personas p on p.colegio_secundario = c.colegio
+        JOIN sga_alumnos a on a.nro_inscripcion = p.nro_inscripcion
+        GROUP BY c.colegio;
+    ''') { row ->
+        // For each school
+        mysqlDB.eachRow("""
+            SELECT
+            count( c.resultado ) as totalapproved
+            FROM sga_cursadas c
+            JOIN sga_alumnos a ON a.legajo = c.legajo
+            JOIN sga_personas p ON p.nro_inscripcion = a.nro_inscripcion
+            WHERE c.resultado = 'A'
+            AND p.colegio_secundario = '${row.colegio}'
+            GROUP BY c.legajo
+        """) { subrow ->
+            ret.add(new Response(row.colegio, row.nombre, subrow.totalapproved / row.nstudents))
+        }
+
+    }
+
+    return ret
+}
 
