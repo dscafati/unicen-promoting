@@ -6,7 +6,7 @@ import java.util.List;
 
 public abstract class Indicator {
     private String name;
-    
+
     //@todo ver como setear el criterio. Si es por constructor o setter
     private Criterion criterion;
 
@@ -24,7 +24,7 @@ public abstract class Indicator {
     public boolean isBetter (double value1, double value2) {
     	return criterion.isBetter(value1, value2);
     }
-    
+
     public double getMatrixComparisonValue(double value1, double value2) {
     	double matrixValue = 0;
     	
