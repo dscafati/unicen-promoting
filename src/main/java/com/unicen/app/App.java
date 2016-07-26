@@ -11,6 +11,7 @@ import java.io.FileInputStream;
 public class App
 {
     private Indicator[] indicators;
+    private double[][] indicatorsComparisonMatrix; 
     private static MainWindow mw;
 
 
