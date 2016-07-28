@@ -69,7 +69,7 @@ public class AHP {
 	}
 	
 	/*
-	 * Inicializa la hash tomando como base la primera lista de responde.
+	 * Inicializa la hash tomando como base la primera lista de response.
 	 * Se llama desde el constructor
 	 */
 	private void initElementsAndNames () {
@@ -86,7 +86,7 @@ public class AHP {
 	
 	/*
 	 * Calcula el vector de prioridades de un indicador dado, pero lo deja 
-	 * distribuido en la Hash de los elementos. Para eso crea la matris
+	 * distribuido en la Hash de los elementos. Para eso crea la matriz
 	 * correspondiente y calcula todo.
 	 */
 	private void calculateVectorForIndicator (int indicator) {
@@ -96,7 +96,9 @@ public class AHP {
 		List <Response> responses = new ArrayList<Response>();
 		try {
 			responses.addAll(actualIndicator.evaluateAll());
-		} catch (Exception e){}
+		} catch (Exception e){
+			App.throwError(e);
+		}
 	
 		//creating the comparison matrix for this indicator
 		int n = responses.size();
