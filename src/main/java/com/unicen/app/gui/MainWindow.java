@@ -7,6 +7,7 @@ import com.intellij.uiDesigner.core.Spacer;
 import com.unicen.app.App;
 import com.unicen.app.indicators.Factory;
 import com.unicen.app.indicators.Response;
+import javafx.scene.control.cell.CheckBoxListCell;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -27,11 +28,12 @@ public class MainWindow extends Component {
     private DefaultTableModel indicatorsTableModel;
     private JPanel mcdmIndicatorsPanel;
     private JLabel mcdmIndicatorsLabel;
-    private JCheckBox checkBox1;
     private JTable mcdmTable;
     private JButton mcdmShowChartButton;
     private JButton indicatorsShowChartButton;
     private JScrollPane indicatorsTableContainer;
+    private JList checkBoxList;
+    private JButton calculateButton;
     private String indicatorsCurrentSelection;
 
     public static void main(String[] args) {
@@ -139,6 +141,39 @@ public class MainWindow extends Component {
 
             GraphWindow.main(args);
         });
+
+        // Initialize checkBoxList
+        checkBoxList = new com.unicen.app.gui.CheckBoxList();
+        DefaultListModel checkBoxModel = new DefaultListModel();
+
+
+        // Load indicators
+        HashMap<String, String> indicatorsCheck = Factory.listIndicators();
+
+
+        // Add indicators
+        for (String i : indicatorsCheck.keySet()) {
+            JCheckBox box = new JCheckBox();
+            box.setText(indicatorsCheck.get(i));
+            checkBoxModel.addElement(box);
+        }
+
+        checkBoxList.setModel(checkBoxModel);
+
+        // Calculate button initialization
+        calculateButton = new JButton();
+        calculateButton.addActionListener(actionEvent -> {
+            CheckBoxList lista = (CheckBoxList)checkBoxList;
+            if (lista.choosenAmount()>0) {
+                PairwiseWindow wnd = new PairwiseWindow();
+                wnd.main((CheckBoxList) checkBoxList);
+            } else {
+                JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), "You must select at least one element");
+            }
+        });
+
+
+
     }
 
     {
@@ -187,9 +222,6 @@ public class MainWindow extends Component {
         mcdmIndicatorsPanel.add(mcdmIndicatorsLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final Spacer spacer1 = new Spacer();
         mcdmIndicatorsPanel.add(spacer1, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-        checkBox1 = new JCheckBox();
-        checkBox1.setText("CheckBox");
-        mcdmIndicatorsPanel.add(checkBox1, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         mcdmTable = new JTable();
         mcdmTable.setAutoCreateRowSorter(true);
         mcdmPanel.add(mcdmTable, new GridConstraints(0, 1, 2, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50), null, 0, false));
