@@ -25,6 +25,8 @@ public abstract class Indicator {
     	return criterion.isBetter(value1, value2);
     }
 
+    public void setCriterion(Criterion criterion) {this.criterion = criterion;}
+
     public double getMatrixComparisonValue(double value1, double value2) {
     	double matrixValue = 0;
     	

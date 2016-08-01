@@ -9,6 +9,10 @@ import com.unicen.app.indicators.Factory;
 import com.unicen.app.indicators.Response;
 import javafx.scene.control.cell.CheckBoxListCell;
 
+import com.unicen.app.indicators.Decision;
+import com.unicen.app.indicators.Indicator;
+import com.unicen.app.AHP;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -34,6 +38,7 @@ public class MainWindow extends Component {
     private JScrollPane indicatorsTableContainer;
     private JList checkBoxList;
     private JButton calculateButton;
+    private JScrollPane mcdmTableContainer;
     private String indicatorsCurrentSelection;
 
     public static void main(String[] args) {
@@ -166,14 +171,35 @@ public class MainWindow extends Component {
             CheckBoxList lista = (CheckBoxList)checkBoxList;
             if (lista.choosenAmount()>0) {
                 PairwiseWindow wnd = new PairwiseWindow();
-                wnd.main((CheckBoxList) checkBoxList);
+                wnd.main(this,(CheckBoxList) checkBoxList);
             } else {
                 JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), "You must select at least one element");
             }
         });
 
+        // Initialize mcdm Table
+        mcdmTable = new JTable();
+        DefaultTableModel mcdmTableModel = new DefaultTableModel();
+        mcdmTableModel.addColumn("School Name");
+        mcdmTableModel.addColumn("Probability");
+        mcdmTable.setModel(mcdmTableModel);
 
+    }
 
+    public void showAHPResults (List<Indicator> indicators, double[][] indicatorsMatrix) {
+        // Limpia la tabla
+        DefaultTableModel model = (DefaultTableModel)mcdmTable.getModel();
+        for (int i=0; i<model.getRowCount(); i++)
+            model.removeRow(i);
+
+        // Calcula AHP
+        AHP ahp = new AHP (indicators, indicatorsMatrix);
+        List<Decision> result = ahp.calculateDecision();
+
+        // Muestra la tabla
+        for (Decision d: result) {
+            model.addRow(new Object[]{d.getSchoolName(), d.getProbability()});
+        }
     }
 
     {

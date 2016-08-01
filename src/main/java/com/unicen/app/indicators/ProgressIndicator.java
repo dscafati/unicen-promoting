@@ -9,6 +9,7 @@ public class ProgressIndicator extends Indicator {
 
     public ProgressIndicator() {
         this.setName("Degree of progress");
+        this.setCriterion(new HigherCriterion());
     }
 
     public List<Response> evaluateAll() throws Exception {

@@ -102,16 +102,6 @@
                   </component>
                 </children>
               </grid>
-              <component id="7650f" class="javax.swing.JTable" binding="mcdmTable">
-                <constraints>
-                  <grid row="0" column="1" row-span="2" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
-                    <preferred-size width="150" height="50"/>
-                  </grid>
-                </constraints>
-                <properties>
-                  <autoCreateRowSorter value="true"/>
-                </properties>
-              </component>
               <component id="fdf3c" class="javax.swing.JButton" binding="mcdmShowChartButton">
                 <constraints>
                   <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
@@ -128,6 +118,19 @@
                   <text value="Calculate"/>
                 </properties>
               </component>
+              <scrollpane id="60e17" binding="mcdmTableContainer">
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="14ba9" class="javax.swing.JTable" binding="mcdmTable" custom-create="true">
+                    <constraints/>
+                    <properties/>
+                  </component>
+                </children>
+              </scrollpane>
             </children>
           </grid>
         </children>
