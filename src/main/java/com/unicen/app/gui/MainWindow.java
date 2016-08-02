@@ -169,8 +169,8 @@ public class MainWindow extends Component {
         calculateButton.addActionListener(actionEvent -> {
             CheckBoxList lista = (CheckBoxList)checkBoxList;
             if (lista.choosenAmount()>0) {
-                PairwiseWindow wnd = new PairwiseWindow();
-                wnd.main(this,(CheckBoxList) checkBoxList);
+                PairwiseWindow wnd = new PairwiseWindow(this,(CheckBoxList) checkBoxList);
+                wnd.main();
             } else {
                 JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), "You must select at least one element");
             }

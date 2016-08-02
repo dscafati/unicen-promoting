@@ -5,7 +5,9 @@
     <constraints>
       <xy x="20" y="20" width="617" height="472"/>
     </constraints>
-    <properties/>
+    <properties>
+      <foreground color="-6776680"/>
+    </properties>
     <border type="none"/>
     <children>
       <tabbedpane id="ebf0b" binding="tabContainer">

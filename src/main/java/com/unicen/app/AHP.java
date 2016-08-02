@@ -3,6 +3,8 @@ package com.unicen.app;
 import com.unicen.app.indicators.Indicator;
 import com.unicen.app.indicators.Response;
 import com.unicen.app.indicators.Decision;
+
+import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,8 +21,8 @@ public class AHP {
 	 * lista de response todo el tiempo
 	 */
 	
-	private HashMap <Integer, ArrayList<Double>> elements;
-	private HashMap <Integer, String> names;
+	private HashMap <Integer, ArrayList<Double>> elements = new HashMap<Integer,ArrayList<Double>>();
+	private HashMap <Integer, String> names = new HashMap<Integer,String>();
 	private List<Indicator> indicators = new ArrayList<Indicator>();
 	private double[] indicatorsPriorityVector;
 	
@@ -82,6 +84,7 @@ public class AHP {
 			elements.put (r.getSchoolId(), new ArrayList<Double>());
 			names.put(r.getSchoolId(), r.getSchoolName());
 		}
+
 	}
 	
 	/*
@@ -148,7 +151,7 @@ public class AHP {
 		for (int i=0; i<n; i++) {
 			Response r = responses.get(i);
 			elements.get(r.getSchoolId()).add(new Double(priorityVector[i]));
-			
+
 			/*
 			 * Aca estoy agregandole a la escuela el valor de probabilidad asociado al
 			 * indicador actual. No hace falta indicar posicion en la lista, porque se agrega

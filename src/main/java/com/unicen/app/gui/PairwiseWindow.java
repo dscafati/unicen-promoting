@@ -7,7 +7,12 @@ import com.unicen.app.indicators.Factory;
 import com.unicen.app.indicators.Indicator;
 
 import javax.swing.*;
+
+
+import javax.swing.table.DefaultTableModel;
+
 import java.awt.*;
+
 import java.util.*;
 import java.util.List;
 
@@ -17,22 +22,62 @@ import java.util.List;
 public class PairwiseWindow {
     private JPanel pairwisePanel;
     private JButton confirmButton;
-    private CheckBoxList checkBoxList;
+    private JTabbedPane tabbedPane1;
+    private JTable editableMatrix;
+    private List<String> selected;
     private MainWindow mainWindow;
 
-    public void main(MainWindow mw, CheckBoxList checkBoxList) {
-        JFrame frame = new JFrame("MainWindow");
-        frame.setMinimumSize(new Dimension(300, 300));
+
+
+    public PairwiseWindow (MainWindow mw, CheckBoxList checkBoxList) {
+        this.selected = checkBoxList.choosenValues();
+        this.mainWindow = mw;
+    }
+    public void main () {
+        JFrame frame = new JFrame("PairwiseWindow");
+        frame.setMinimumSize(new java.awt.Dimension(300,300));
         frame.setContentPane(pairwisePanel);
         frame.pack();
         frame.setVisible(true);
-        this.checkBoxList = checkBoxList;
-        this.mainWindow = mw;
+
+        int n = selected.size()+1;
+        MatrixModel tableModel = new MatrixModel(n,n);
+
+
+        tableModel.setRowCount(n);
+        tableModel.setColumnCount(n);
+
+        for (int i=1; i<n;i++) {
+            tableModel.setValueAt(selected.get(i-1),0,i);
+            tableModel.setValueAt(selected.get(i-1),i,0);
+        }
+
+
+        editableMatrix.setModel(tableModel);
+
+        for (int i=1; i<n; i++)
+            for (int j=1; j<n; j++) {
+                if (i==j) {
+                    tableModel.setValueAt(1, i, j);
+                    tableModel.setCellEditable(i, j, false);
+                } else
+                    if (i>j) {
+                        tableModel.setCellEditable(i,j, false);
+                    } else {
+                        tableModel.setCellEditable(i,j,true);
+
+                    }
+
+            }
+
     }
 
     private void createUIComponents() {
         // TODO: place custom component creation code here
         confirmButton = new JButton();
+        editableMatrix = new JTable();
+        //comparisonContainer = new JScrollPane();
+        //comparisonContainer.setViewportView(editableMatrix);
 
         confirmButton.addActionListener(actionEvent -> {
 
@@ -40,23 +85,27 @@ public class PairwiseWindow {
 
             /*Si está correcta*/
 
-            List<String> selected = checkBoxList.choosenValues();
+
             List<Indicator> indicators = new ArrayList<Indicator>();
             for (String indicator : selected) {
                 indicators.add(Factory.get(indicator));
             }
-            int n = indicators.size();
+
+            int n=selected.size();
+
             double[][] indicatorsMatrix = new double[n][n];
 
 
             //copiar los valores que ingreso el usuario a la matriz
 
             //Prueba
-            for (int i = 0; i < n; i++)
-                for (int j = 0; j < n; j++)
-                    indicatorsMatrix[i][j] = 1;
+            for (int i = 1; i <= n; i++)
+                for (int j = 1; j <= n; j++) {
+                    Double value = Double.parseDouble(editableMatrix.getModel().getValueAt(i,j).toString());
+                    indicatorsMatrix[i-1][j-1] = value.doubleValue();
+                }
 
-            mainWindow.showAHPResults(indicators, indicatorsMatrix);
+            //mainWindow.showAHPResults(indicators, indicatorsMatrix);
 
         });
 
