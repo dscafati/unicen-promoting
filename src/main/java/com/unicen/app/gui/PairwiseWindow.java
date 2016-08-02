@@ -99,9 +99,11 @@ public class PairwiseWindow {
             //copiar los valores que ingreso el usuario a la matriz
 
             //Prueba
-            for (int i = 0; i < n; i++)
-                for (int j = 0; j < n; j++)
-                    indicatorsMatrix[i][j] = 1;
+            for (int i = 1; i <= n; i++)
+                for (int j = 1; j <= n; j++) {
+                    Double value = Double.parseDouble(editableMatrix.getModel().getValueAt(i,j).toString());
+                    indicatorsMatrix[i-1][j-1] = value.doubleValue();
+                }
 
             //mainWindow.showAHPResults(indicators, indicatorsMatrix);
 

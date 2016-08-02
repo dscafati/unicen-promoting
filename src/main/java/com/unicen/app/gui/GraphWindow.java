@@ -40,7 +40,7 @@ public class GraphWindow {
 
         JFrame frame = new JFrame("GraphWindow");
         frame.setContentPane(new GraphWindow().graphPanel);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
 
