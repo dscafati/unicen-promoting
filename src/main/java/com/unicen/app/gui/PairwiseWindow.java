@@ -24,6 +24,7 @@ public class PairwiseWindow {
     private JButton confirmButton;
     private JTabbedPane tabbedPane1;
     private JTable editableMatrix;
+    private JTextPane helpText;
     private List<String> selected;
     private MainWindow mainWindow;
 
@@ -39,6 +40,7 @@ public class PairwiseWindow {
         frame.setContentPane(pairwisePanel);
         frame.pack();
         frame.setVisible(true);
+        helpText.setCaretPosition(0);
 
         int n = selected.size()+1;
         MatrixModel tableModel = new MatrixModel(n,n);
