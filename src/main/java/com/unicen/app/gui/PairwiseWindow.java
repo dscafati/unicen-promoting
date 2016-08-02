@@ -8,6 +8,7 @@ import com.unicen.app.indicators.Indicator;
 
 import javax.swing.*;
 
+
 import javax.swing.table.DefaultTableModel;
 
 import java.awt.*;
@@ -25,6 +26,7 @@ public class PairwiseWindow {
     private JTable editableMatrix;
     private List<String> selected;
     private MainWindow mainWindow;
+
 
 
     public PairwiseWindow (MainWindow mw, CheckBoxList checkBoxList) {
@@ -67,6 +69,7 @@ public class PairwiseWindow {
                     }
 
             }
+
     }
 
     private void createUIComponents() {
@@ -87,7 +90,9 @@ public class PairwiseWindow {
             for (String indicator : selected) {
                 indicators.add(Factory.get(indicator));
             }
+
             int n=selected.size();
+
             double[][] indicatorsMatrix = new double[n][n];
 
 
