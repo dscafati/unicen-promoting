@@ -186,7 +186,7 @@ public class AHP {
 		
 		//se calcula la decision final y de paso se crea la lista a devolver
 		for (Integer id : elements.keySet()) {
-			decision.add(new Decision (id, names.get(id) ,this.getProbability(id)));		
+			decision.add(new Decision (id, names.get(id),this.getProbability(id)));
 		}
 		
 		Collections.sort(decision);
