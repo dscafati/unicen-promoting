@@ -25,9 +25,9 @@ public class AHP {
 	private double[] indicatorsPriorityVector;
 	
 	
-	public AHP (Indicator[] indicators, double[][] indicatorsComparisonMatrix) {
+	public AHP (List<Indicator> indicators, double[][] indicatorsComparisonMatrix) {
 		
-		this.indicators = Arrays.asList(indicators);
+		this.indicators.addAll(indicators);
 		
 		this.initializeIndicatorsPriorityVector(indicatorsComparisonMatrix);
 		

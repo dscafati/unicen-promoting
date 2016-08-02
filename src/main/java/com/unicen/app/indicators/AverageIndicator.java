@@ -9,6 +9,7 @@ public class AverageIndicator extends Indicator {
 
     public AverageIndicator() {
         this.setName("Average");
+        this.setCriterion(new HigherCriterion());
     }
 
     public List<Response> evaluateAll() throws Exception {
