@@ -1,4 +1,4 @@
-import com.unicen.app.indicators.Response;
+import com.unicen.app.indicators.Response
 /**
  * Available vars:
  *
@@ -55,9 +55,9 @@ def getAverageDegreeOfProgress(){
             JOIN sga_alumnos a ON a.legajo = c.legajo
             JOIN sga_personas p ON p.nro_inscripcion = a.nro_inscripcion
             WHERE c.resultado = 'A'
-            AND p.colegio_secundario = '${row.colegio}'
+            AND p.colegio_secundario = :colegio
             GROUP BY c.legajo
-        """) { subrow ->
+        """, [colegio: row.colegio]) { subrow ->
             ret.add(new Response(row.colegio, row.nombre, subrow.totalapproved / row.nstudents))
         }
 

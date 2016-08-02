@@ -34,7 +34,7 @@ public class Facade {
         String password = Config.getProperty("mysql_password");
         String db = Config.getProperty("mysql_db");
         try {
-            mysqlDB = Sql.newInstance("jdbc:mysql://" + host + "/" + db, user, password, "com.mysql.cj.jdbc.Driver");
+            mysqlDB = Sql.newInstance("jdbc:mysql://" + host + "/" + db + "?serverTimezone=UTC", user, password, "com.mysql.cj.jdbc.Driver");
         } catch (Exception e) {
         }
 
@@ -44,7 +44,7 @@ public class Facade {
         password = Config.getProperty("pgsql_password");
         db = Config.getProperty("pgsql_db");
         try {
-            pgsqlDB = Sql.newInstance("jdbc:postgresql://" + host + "/" + db, user, password, "org.postgresql.Driver");
+            pgsqlDB = Sql.newInstance("jdbc:postgresql://" + host + "/" + db + "?serverTimezone=UTC", user, password, "org.postgresql.Driver");
         } catch (Exception e) {
         }
 
@@ -55,7 +55,7 @@ public class Facade {
         password = Config.getProperty("informix_password");
         db = Config.getProperty("informix_db");
         try {
-            informixDB = Sql.newInstance("jdbc:informix-sqli://" + host + "/" + db, user, password, "com.informix.jdbc.IfxDriver");
+            informixDB = Sql.newInstance("jdbc:informix-sqli://" + host + "/" + db + "?serverTimezone=UTC", user, password, "com.informix.jdbc.IfxDriver");
         } catch (Exception e) {
         }
 
@@ -68,7 +68,6 @@ public class Facade {
         GroovyShell shell = new GroovyShell(binding);
 
         this.script = shell.parse(new File("model_scripts/script.groovy"));
-
     }
 
 

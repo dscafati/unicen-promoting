@@ -7,7 +7,6 @@ import com.intellij.uiDesigner.core.Spacer;
 import com.unicen.app.App;
 import com.unicen.app.indicators.Factory;
 import com.unicen.app.indicators.Response;
-import javafx.scene.control.cell.CheckBoxListCell;
 
 import com.unicen.app.indicators.Decision;
 import com.unicen.app.indicators.Indicator;
@@ -170,8 +169,8 @@ public class MainWindow extends Component {
         calculateButton.addActionListener(actionEvent -> {
             CheckBoxList lista = (CheckBoxList)checkBoxList;
             if (lista.choosenAmount()>0) {
-                PairwiseWindow wnd = new PairwiseWindow();
-                wnd.main(this,(CheckBoxList) checkBoxList);
+                PairwiseWindow wnd = new PairwiseWindow(this,(CheckBoxList) checkBoxList);
+                wnd.main();
             } else {
                 JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), "You must select at least one element");
             }
