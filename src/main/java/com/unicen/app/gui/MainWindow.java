@@ -7,7 +7,6 @@ import com.intellij.uiDesigner.core.Spacer;
 import com.unicen.app.App;
 import com.unicen.app.indicators.Factory;
 import com.unicen.app.indicators.Response;
-import javafx.scene.control.cell.CheckBoxListCell;
 
 import com.unicen.app.indicators.Decision;
 import com.unicen.app.indicators.Indicator;
