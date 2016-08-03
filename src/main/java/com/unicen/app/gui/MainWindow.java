@@ -4,18 +4,18 @@ import com.google.gson.Gson;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
-import com.unicen.app.App;
-import com.unicen.app.indicators.Factory;
-import com.unicen.app.indicators.Response;
-
-import com.unicen.app.indicators.Decision;
-import com.unicen.app.indicators.Indicator;
 import com.unicen.app.AHP;
+import com.unicen.app.App;
+import com.unicen.app.indicators.Decision;
+import com.unicen.app.indicators.Factory;
+import com.unicen.app.indicators.Indicator;
+import com.unicen.app.indicators.Response;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -58,9 +58,9 @@ public class MainWindow extends Component {
 
         // Enable or disable show chart button according to table data
         indicatorsTableModel.addTableModelListener(tableModelEvent -> {
-            if( indicatorsTableModel.getRowCount() == 0 ){
+            if (indicatorsTableModel.getRowCount() == 0) {
                 indicatorsShowChartButton.setEnabled(false);
-            }else{
+            } else {
                 indicatorsShowChartButton.setEnabled(true);
             }
         });
@@ -124,14 +124,14 @@ public class MainWindow extends Component {
 
             ArrayList<ArrayList<Object>> dataAsBeingShown = new ArrayList<ArrayList<Object>>();
             // Get sorted data
-            for( int i = 0; i < Math.min(10, indicatorsTable.getRowCount()); i++) {
+            for (int i = 0; i < Math.min(10, indicatorsTable.getRowCount()); i++) {
                 // Get original index on the model
                 Integer originalIndex = indicatorsTable.getRowSorter().convertRowIndexToModel(i);
 
                 // Get each cell of this row
                 ArrayList<Object> row = new ArrayList<Object>();
-                for( int c =0; c < indicatorsTableModel.getColumnCount(); c++){
-                    row.add(indicatorsTableModel.getValueAt(originalIndex,c));
+                for (int c = 0; c < indicatorsTableModel.getColumnCount(); c++) {
+                    row.add(indicatorsTableModel.getValueAt(originalIndex, c));
                 }
                 dataAsBeingShown.add(row);
             }
@@ -147,7 +147,7 @@ public class MainWindow extends Component {
         });
 
         // Initialize checkBoxList
-        checkBoxList = new com.unicen.app.gui.CheckBoxList();
+        checkBoxList = new CheckBoxList();
         DefaultListModel checkBoxModel = new DefaultListModel();
 
 
@@ -167,9 +167,9 @@ public class MainWindow extends Component {
         // Calculate button initialization
         calculateButton = new JButton();
         calculateButton.addActionListener(actionEvent -> {
-            CheckBoxList lista = (CheckBoxList)checkBoxList;
-            if (lista.choosenAmount()>0) {
-                PairwiseWindow wnd = new PairwiseWindow(this,(CheckBoxList) checkBoxList);
+            CheckBoxList lista = (CheckBoxList) checkBoxList;
+            if (lista.choosenAmount() > 0) {
+                PairwiseWindow wnd = new PairwiseWindow(this, (CheckBoxList) checkBoxList);
                 wnd.main();
             } else {
                 JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), "You must select at least one element");
@@ -185,18 +185,18 @@ public class MainWindow extends Component {
 
     }
 
-    public void showAHPResults (List<Indicator> indicators, double[][] indicatorsMatrix) {
+    public void showAHPResults(List<Indicator> indicators, double[][] indicatorsMatrix) {
         // Limpia la tabla
-        DefaultTableModel model = (DefaultTableModel)mcdmTable.getModel();
-        for (int i=0; i<model.getRowCount(); i++)
+        DefaultTableModel model = (DefaultTableModel) mcdmTable.getModel();
+        for (int i = 0; i < model.getRowCount(); i++)
             model.removeRow(i);
 
         // Calcula AHP
-        AHP ahp = new AHP (indicators, indicatorsMatrix);
+        AHP ahp = new AHP(indicators, indicatorsMatrix);
         List<Decision> result = ahp.calculateDecision();
 
         // Muestra la tabla
-        for (Decision d: result) {
+        for (Decision d : result) {
             model.addRow(new Object[]{d.getSchoolName(), d.getProbability()});
         }
     }
@@ -219,6 +219,7 @@ public class MainWindow extends Component {
         createUIComponents();
         mainPanel = new JPanel();
         mainPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        mainPanel.setForeground(new Color(-6776680));
         tabContainer = new JTabbedPane();
         mainPanel.add(tabContainer, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(200, 200), null, 0, false));
         indicatorsPanel = new JPanel();
@@ -240,19 +241,20 @@ public class MainWindow extends Component {
         mcdmPanel.setLayout(new GridLayoutManager(3, 2, new Insets(0, 0, 0, 0), -1, -1));
         tabContainer.addTab("MCDM", null, mcdmPanel, "AHP method results");
         mcdmIndicatorsPanel = new JPanel();
-        mcdmIndicatorsPanel.setLayout(new GridLayoutManager(3, 1, new Insets(0, 0, 0, 0), -1, -1));
-        mcdmPanel.add(mcdmIndicatorsPanel, new GridConstraints(0, 0, 3, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        mcdmIndicatorsPanel.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
+        mcdmPanel.add(mcdmIndicatorsPanel, new GridConstraints(0, 0, 2, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         mcdmIndicatorsLabel = new JLabel();
         mcdmIndicatorsLabel.setText("Criteria");
         mcdmIndicatorsPanel.add(mcdmIndicatorsLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final Spacer spacer1 = new Spacer();
-        mcdmIndicatorsPanel.add(spacer1, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-        mcdmTable = new JTable();
-        mcdmTable.setAutoCreateRowSorter(true);
-        mcdmPanel.add(mcdmTable, new GridConstraints(0, 1, 2, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50), null, 0, false));
+        mcdmIndicatorsPanel.add(checkBoxList, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50), null, 0, false));
         mcdmShowChartButton = new JButton();
         mcdmShowChartButton.setText("Show Chart");
         mcdmPanel.add(mcdmShowChartButton, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        calculateButton.setText("Calculate");
+        mcdmPanel.add(calculateButton, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        mcdmTableContainer = new JScrollPane();
+        mcdmPanel.add(mcdmTableContainer, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        mcdmTableContainer.setViewportView(mcdmTable);
     }
 
     /**
