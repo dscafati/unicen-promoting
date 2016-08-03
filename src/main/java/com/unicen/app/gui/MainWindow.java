@@ -3,7 +3,6 @@ package com.unicen.app.gui;
 import com.google.gson.Gson;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
-import com.intellij.uiDesigner.core.Spacer;
 import com.unicen.app.AHP;
 import com.unicen.app.App;
 import com.unicen.app.indicators.Decision;
@@ -183,6 +182,15 @@ public class MainWindow extends Component {
         mcdmTableModel.addColumn("Probability");
         mcdmTable.setModel(mcdmTableModel);
 
+        // Enable or disable show chart button according to table data
+        mcdmTableModel.addTableModelListener(tableModelEvent -> {
+            if (mcdmTableModel.getRowCount() == 0) {
+                mcdmShowChartButton.setEnabled(false);
+            } else {
+                mcdmShowChartButton.setEnabled(true);
+            }
+        });
+
     }
 
     public void showAHPResults(List<Indicator> indicators, double[][] indicatorsMatrix) {
@@ -248,6 +256,7 @@ public class MainWindow extends Component {
         mcdmIndicatorsPanel.add(mcdmIndicatorsLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         mcdmIndicatorsPanel.add(checkBoxList, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50), null, 0, false));
         mcdmShowChartButton = new JButton();
+        mcdmShowChartButton.setEnabled(false);
         mcdmShowChartButton.setText("Show Chart");
         mcdmPanel.add(mcdmShowChartButton, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         calculateButton.setText("Calculate");
