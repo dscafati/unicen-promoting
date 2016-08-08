@@ -33,7 +33,7 @@ def getAllAverageIndicator(){
      return ret
 }
 
-def getAverageDegreeOfProgress(){
+def getAverageDegreeOfProgressIndicator(){
     def ret = new ArrayList<Response>()
 
     // Select schools with students
@@ -66,3 +66,93 @@ def getAverageDegreeOfProgress(){
     return ret
 }
 
+/**
+ *
+ * @todo get estimated duration of each major
+ */
+def getAverageDegreeDurationIndicator(){
+
+    def ret = new ArrayList<Response>()
+
+    mysqlDB.eachRow('''
+        SELECT
+            c.colegio as colegio,
+            c.nombre as nombre,
+            AVG(t.duracion_carrera) AS duracion
+        FROM sga_titulos_otorg t
+        LEFT JOIN sga_alumnos a USING(legajo)
+        LEFT JOIN sga_personas p ON (a.nro_inscripcion = p.nro_inscripcion)
+        JOIN sga_coleg_sec c ON( p.colegio_secundario = c.colegio )
+        GROUP BY c.colegio
+    ''') { row ->
+        ret.add(new Response(row.colegio, row.nombre, row.duracion))
+    }
+
+    return ret
+}
+
+def getGraduatedAverageIndicator(){
+
+    def ret = new ArrayList<Response>()
+
+    mysqlDB.eachRow('''
+        SELECT
+            c.colegio as colegio,
+            c.nombre as nombre,
+            AVG(t.prom_general) AS prom
+        FROM sga_titulos_otorg t
+        LEFT JOIN sga_alumnos a USING(legajo)
+        LEFT JOIN sga_personas p ON (a.nro_inscripcion = p.nro_inscripcion)
+        JOIN sga_coleg_sec c ON( p.colegio_secundario = c.colegio )
+        GROUP BY c.colegio
+    ''') { row ->
+        ret.add(new Response(row.colegio, row.nombre, row.prom))
+    }
+
+    return ret
+}
+def getGraduatedAverageAltIndicator(){
+
+    def ret = new ArrayList<Response>()
+
+    mysqlDB.eachRow('''
+        SELECT
+            c.colegio as colegio,
+            c.nombre as nombre,
+            AVG(t.prom_general) AS prom
+        FROM sga_titulos_otorg t
+        LEFT JOIN sga_alumnos a USING(legajo)
+        LEFT JOIN sga_personas p ON (a.nro_inscripcion = p.nro_inscripcion)
+        JOIN sga_coleg_sec c ON( p.colegio_secundario = c.colegio )
+        GROUP BY c.colegio
+    ''') { row ->
+        ret.add(new Response(row.colegio, row.nombre, row.prom))
+    }
+
+    return ret
+}
+def getDesertionDegreeIndicator(){
+
+    def ret = new ArrayList<Response>()
+    mysqlDB.execute('''
+        CREATE TEMPORARY TABLE tmp_desertion
+        SELECT carrera, legajo, datediff(now(),MAX(fecha))/360 as fecha
+        FROM vw_hist_academica
+        GROUP BY legajo
+        HAVING fecha >= 5
+     ''')
+
+    mysqlDB.eachRow('''
+        SELECT
+            c.colegio, c.nombre, COUNT(a.legajo) as desertors
+        FROM tmp_desertion d
+        RIGHT JOIN sga_alumnos a ON (a.legajo = d.legajo)
+        JOIN sga_personas p ON (p.nro_inscripcion = a.nro_inscripcion)
+        JOIN sga_coleg_sec c ON (c.colegio = p.colegio_secundario)
+        GROUP BY c.colegio
+    ''') { row ->
+        ret.add(new Response(row.colegio, row.nombre, row.desertors))
+    }
+
+    return ret
+}

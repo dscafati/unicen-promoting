@@ -7,22 +7,22 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * This indicator measures the average calification of all students from each school
+ * This indicator measures the degree of desertion of students from each school
  */
-public class AverageIndicator extends Indicator {
+public class DesertionIndicator extends Indicator {
 
-    public AverageIndicator() {
-        this.setName("Average");
+    public DesertionIndicator() {
+        this.setName("Desertion degree");
         this.setCriterion(new HigherCriterion());
     }
 
     public List<Response> evaluateAll() throws Exception {
         List<Response> ret;
         try {
-            ret = Facade.getInstance().getAverage();
+            ret = Facade.getInstance().getDesertion();
         } catch (Exception e) {
             e.printStackTrace();
-            throw new Exception("An error has occurred when trying to run \"getAllAverageIndicator()\" method from script");
+            throw new Exception("An error has occurred when trying to run \"getDesertionDegreeIndicator()\" method from script");
         }
         return ret;
     }

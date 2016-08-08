@@ -1,7 +1,6 @@
 package com.unicen.app.indicators;
 
 import java.util.HashMap;
-import java.util.Set;
 
 public class Factory {
     private static HashMap<String, Indicator> indicators = new HashMap<String, Indicator>();
@@ -20,9 +19,12 @@ public class Factory {
         }
 
         // List of indicators
-        indicators.put("average", new AverageIndicator());
+        indicators.put("average", new AllAverageIndicator());
         indicators.put("progress", new ProgressIndicator());
         indicators.put("duration", new DurationIndicator());
+        indicators.put("average-graduated", new GraduatedAverageIndicator());
+        indicators.put("average-graduated-alt", new GraduatedAverageAltIndicator());
+        indicators.put("desertion", new DesertionIndicator());
 
     }
 

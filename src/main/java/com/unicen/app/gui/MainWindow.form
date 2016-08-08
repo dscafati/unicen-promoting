@@ -58,7 +58,7 @@
                   <component id="8d95c" class="javax.swing.JTable" binding="indicatorsTable" custom-create="true">
                     <constraints/>
                     <properties>
-                      <autoCreateRowSorter value="true"/>
+                      <autoCreateRowSorter value="false"/>
                       <enabled value="false"/>
                       <fillsViewportHeight value="true"/>
                       <showHorizontalLines value="true"/>

@@ -124,7 +124,39 @@ public class Facade {
         } else {
             _initializeScripts();
             List<Response> result = (List<Response>) script.invokeMethod("getAverageDegreeDurationIndicator", null);
-            this.cache.putResponse("progress", result);
+            this.cache.putResponse("duration", result);
+            return result;
+        }
+    }
+
+    public List<Response> getGraduatedAverage() throws IOException {
+        if (this.cache.contains("average-graduated")) {
+            return this.cache.getResponse("average-graduated");
+        } else {
+            _initializeScripts();
+            List<Response> result = (List<Response>) script.invokeMethod("getGraduatedAverageIndicator", null);
+            this.cache.putResponse("average-graduated", result);
+            return result;
+        }
+    }
+
+    public List<Response> getGraduatedAverageAlt() throws IOException {
+        if (this.cache.contains("average-graduated-alt")) {
+            return this.cache.getResponse("average-graduated-alt");
+        } else {
+            _initializeScripts();
+            List<Response> result = (List<Response>) script.invokeMethod("getGraduatedAverageAltIndicator", null);
+            this.cache.putResponse("average-graduated-alt", result);
+            return result;
+        }
+    }
+    public List<Response> getDesertion() throws IOException {
+        if (this.cache.contains("desertion")) {
+            return this.cache.getResponse("desertion");
+        } else {
+            _initializeScripts();
+            List<Response> result = (List<Response>) script.invokeMethod("getDesertionDegreeIndicator", null);
+            this.cache.putResponse("desertion", result);
             return result;
         }
     }
