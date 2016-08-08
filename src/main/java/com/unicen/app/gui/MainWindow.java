@@ -85,7 +85,10 @@ public class MainWindow extends Component {
                 // Show waiting cursor
                 mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
                 // Get index of the item selected on the list
-                indicatorsCurrentSelection = indicatorsKeysArray[listSelectionEvent.getFirstIndex()];
+                JList list = (JList) listSelectionEvent.getSource();
+                int selections[] = list.getSelectedIndices();
+                indicatorsCurrentSelection = indicatorsKeysArray[selections[0]];
+                System.out.println(indicatorsCurrentSelection);
                 try {
                     // Execute the indicator associated function
                     List<Response> result = Factory.get(indicatorsCurrentSelection).evaluateAll();
