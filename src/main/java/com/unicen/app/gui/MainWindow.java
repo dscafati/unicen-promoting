@@ -88,7 +88,6 @@ public class MainWindow extends Component {
                 JList list = (JList) listSelectionEvent.getSource();
                 int selections[] = list.getSelectedIndices();
                 indicatorsCurrentSelection = indicatorsKeysArray[selections[0]];
-                System.out.println(indicatorsCurrentSelection);
                 try {
                     // Execute the indicator associated function
                     List<Response> result = Factory.get(indicatorsCurrentSelection).evaluateAll();
