@@ -59,6 +59,7 @@
                     <constraints/>
                     <properties>
                       <autoCreateRowSorter value="true"/>
+                      <enabled value="false"/>
                       <fillsViewportHeight value="true"/>
                       <showHorizontalLines value="true"/>
                       <showVerticalLines value="true"/>

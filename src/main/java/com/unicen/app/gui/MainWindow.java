@@ -243,6 +243,7 @@ public class MainWindow extends Component {
         indicatorsTableContainer = new JScrollPane();
         indicatorsPanel.add(indicatorsTableContainer, new GridConstraints(0, 1, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         indicatorsTable.setAutoCreateRowSorter(true);
+        indicatorsTable.setEnabled(false);
         indicatorsTable.setFillsViewportHeight(true);
         indicatorsTable.setShowHorizontalLines(true);
         indicatorsTable.setShowVerticalLines(true);
