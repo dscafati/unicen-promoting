@@ -62,7 +62,7 @@
                       <enabled value="false"/>
                       <fillsViewportHeight value="true"/>
                       <showHorizontalLines value="true"/>
-                      <showVerticalLines value="true"/>
+                      <showVerticalLines value="false"/>
                     </properties>
                   </component>
                 </children>
@@ -131,7 +131,10 @@
                 <children>
                   <component id="14ba9" class="javax.swing.JTable" binding="mcdmTable" custom-create="true">
                     <constraints/>
-                    <properties/>
+                    <properties>
+                      <enabled value="false"/>
+                      <showVerticalLines value="false"/>
+                    </properties>
                   </component>
                 </children>
               </scrollpane>

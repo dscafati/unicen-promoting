@@ -5,7 +5,7 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.unicen.app.AHP;
 import com.unicen.app.App;
-import com.unicen.app.indicators.Decision;
+import com.unicen.app.ahp.Decision;
 import com.unicen.app.indicators.Factory;
 import com.unicen.app.indicators.Indicator;
 import com.unicen.app.indicators.Response;
@@ -246,7 +246,7 @@ public class MainWindow extends Component {
         indicatorsTable.setEnabled(false);
         indicatorsTable.setFillsViewportHeight(true);
         indicatorsTable.setShowHorizontalLines(true);
-        indicatorsTable.setShowVerticalLines(true);
+        indicatorsTable.setShowVerticalLines(false);
         indicatorsTableContainer.setViewportView(indicatorsTable);
         mcdmPanel = new JPanel();
         mcdmPanel.setLayout(new GridLayoutManager(3, 2, new Insets(0, 0, 0, 0), -1, -1));
@@ -266,6 +266,8 @@ public class MainWindow extends Component {
         mcdmPanel.add(calculateButton, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         mcdmTableContainer = new JScrollPane();
         mcdmPanel.add(mcdmTableContainer, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        mcdmTable.setEnabled(false);
+        mcdmTable.setShowVerticalLines(false);
         mcdmTableContainer.setViewportView(mcdmTable);
     }
 

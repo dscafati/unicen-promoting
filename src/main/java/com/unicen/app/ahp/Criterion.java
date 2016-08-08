@@ -1,4 +1,4 @@
-package com.unicen.app.indicators;
+package com.unicen.app.ahp;
 
 public interface Criterion {
 	/*

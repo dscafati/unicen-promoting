@@ -112,7 +112,18 @@ public class Facade {
             return this.cache.getResponse("progress");
         } else {
             _initializeScripts();
-            List<Response> result = (List<Response>) script.invokeMethod("getAverageDegreeOfProgress", null);
+            List<Response> result = (List<Response>) script.invokeMethod("getAverageDegreeOfProgressIndicator", null);
+            this.cache.putResponse("progress", result);
+            return result;
+        }
+    }
+
+    public List<Response> getDuration() throws IOException {
+        if (this.cache.contains("duration")) {
+            return this.cache.getResponse("duration");
+        } else {
+            _initializeScripts();
+            List<Response> result = (List<Response>) script.invokeMethod("getAverageDegreeDurationIndicator", null);
             this.cache.putResponse("progress", result);
             return result;
         }

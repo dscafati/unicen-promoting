@@ -7,22 +7,22 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * This indicator measures the average calification of all students from each school
+ * This indicator measures the time it takes in average to finish the degree for all the students from each school
  */
-public class AverageIndicator extends Indicator {
+public class DurationIndicator extends Indicator {
 
-    public AverageIndicator() {
-        this.setName("Average");
+    public DurationIndicator() {
+        this.setName("Major Duration");
         this.setCriterion(new HigherCriterion());
     }
 
     public List<Response> evaluateAll() throws Exception {
         List<Response> ret;
         try {
-            ret = Facade.getInstance().getAverage();
+            ret = Facade.getInstance().getDuration();
         } catch (Exception e) {
             e.printStackTrace();
-            throw new Exception("An error has occurred when trying to run \"getAllAverageIndicator()\" method from script");
+            throw new Exception("An error has occurred when trying to run \"getAverageDegreeDurationIndicator()\" method from script");
         }
         return ret;
     }
@@ -33,9 +33,9 @@ public class AverageIndicator extends Indicator {
     }
 
     @Override
-    public HashMap<String, Object> getExtraGraphData(){
-        HashMap<String,Object> atts = new HashMap<>();
-        atts.put("vertical_axis_label", "Averages");
+    public HashMap<String, Object> getExtraGraphData() {
+        HashMap<String, Object> atts = new HashMap<>();
+        atts.put("vertical_axis_label", "Degree duration average");
         atts.put("horizontal_axis_label", "Schools");
         return atts;
     }

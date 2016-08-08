@@ -20,8 +20,9 @@ public class Factory {
         }
 
         // List of indicators
-        indicators.put("Average", new AverageIndicator());
-        indicators.put("Degree of progress", new ProgressIndicator());
+        indicators.put("average", new AverageIndicator());
+        indicators.put("progress", new ProgressIndicator());
+        indicators.put("duration", new DurationIndicator());
 
     }
 

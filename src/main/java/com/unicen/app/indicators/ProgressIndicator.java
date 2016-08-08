@@ -1,10 +1,14 @@
 package com.unicen.app.indicators;
 
+import com.unicen.app.ahp.HigherCriterion;
 import com.unicen.app.model.Facade;
 
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * This indicator measures the average degree of advance in the degree, for the students of each school
+ */
 public class ProgressIndicator extends Indicator {
 
     public ProgressIndicator() {
@@ -18,7 +22,7 @@ public class ProgressIndicator extends Indicator {
             ret = Facade.getInstance().getProgress();
         } catch (Exception e) {
             e.printStackTrace();
-            throw new Exception("An error has occurred when trying to run \"getAllAverageIndicator()\" method from script");
+            throw new Exception("An error has occurred when trying to run \"getAverageDegreeOfProgressIndicator()\" method from script");
         }
         return ret;
     }
