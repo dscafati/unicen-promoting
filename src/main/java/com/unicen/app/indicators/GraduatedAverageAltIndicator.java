@@ -7,22 +7,22 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * This indicator measures the average degree of advance in the degree, for the students of each school
+ * This indicator measures the average calification of all the graduated students from each school, only approved notes
  */
-public class ProgressIndicator extends Indicator {
+public class GraduatedAverageAltIndicator extends Indicator {
 
-    public ProgressIndicator() {
-        this.setName("Degree of progress");
+    public GraduatedAverageAltIndicator() {
+        this.setName("Averages for graduated students without fails");
         this.setCriterion(new HigherCriterion());
     }
 
     public List<Response> evaluateAll() throws Exception {
         List<Response> ret;
         try {
-            ret = Facade.getInstance().getProgress();
+            ret = Facade.getInstance().getGraduatedAverageAlt();
         } catch (Exception e) {
             e.printStackTrace();
-            throw new Exception("An error has occurred when trying to run \"getAverageDegreeOfProgressIndicator()\" method from script");
+            throw new Exception("An error has occurred when trying to run \"getGraduatedAverageAltIndicator()\" method from script");
         }
         return ret;
     }
@@ -35,7 +35,7 @@ public class ProgressIndicator extends Indicator {
     @Override
     public HashMap<String, Object> getExtraGraphData(){
         HashMap<String,Object> atts = new HashMap<>();
-        atts.put("vertical_axis_label", "Progress average among students (# subjects approved)");
+        atts.put("vertical_axis_label", "Averages");
         atts.put("horizontal_axis_label", "Schools");
         return atts;
     }

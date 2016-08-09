@@ -2,12 +2,10 @@ package com.unicen.app;
 
 import com.unicen.app.indicators.Indicator;
 import com.unicen.app.indicators.Response;
-import com.unicen.app.indicators.Decision;
+import com.unicen.app.ahp.Decision;
 
-import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 

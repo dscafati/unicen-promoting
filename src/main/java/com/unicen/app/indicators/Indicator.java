@@ -1,6 +1,7 @@
 package com.unicen.app.indicators;
 
-import java.util.ArrayList;
+import com.unicen.app.ahp.Criterion;
+
 import java.util.HashMap;
 import java.util.List;
 
