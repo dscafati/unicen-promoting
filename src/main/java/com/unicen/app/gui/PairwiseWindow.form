@@ -34,16 +34,6 @@
                   <text value="&amp;Save as..."/>
                 </properties>
               </component>
-              <component id="59fd5" class="javax.swing.JSeparator">
-                <constraints/>
-                <properties/>
-              </component>
-              <component id="a6457" class="javax.swing.JMenuItem" binding="confirmMenuItem">
-                <constraints/>
-                <properties>
-                  <text value="&amp;Confirm"/>
-                </properties>
-              </component>
             </children>
           </grid>
           <hspacer id="54ae7">
@@ -51,14 +41,23 @@
               <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
           </hspacer>
-          <component id="47500" class="javax.swing.JMenu" binding="AboutMenu">
+          <grid id="5e535" class="javax.swing.JMenu" binding="helpMenu" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
             <constraints>
               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="&amp;About"/>
+              <text value="&amp;Help"/>
             </properties>
-          </component>
+            <border type="none"/>
+            <children>
+              <component id="83996" class="javax.swing.JMenuItem" binding="aboutMenuItem" custom-create="true">
+                <constraints/>
+                <properties>
+                  <text value="&amp;About"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
         </children>
       </grid>
       <tabbedpane id="4e10d" binding="tabbedPane1" default-binding="true">

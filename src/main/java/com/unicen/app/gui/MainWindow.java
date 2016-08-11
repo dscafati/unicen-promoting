@@ -1,5 +1,8 @@
 package com.unicen.app.gui;
 
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.dataformat.csv.CsvMapper;
+import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.google.gson.Gson;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
@@ -10,14 +13,18 @@ import com.unicen.app.ahp.Decision;
 import com.unicen.app.indicators.Factory;
 import com.unicen.app.indicators.Indicator;
 import com.unicen.app.indicators.Response;
+import com.unicen.app.model.Facade;
+import com.unicen.app.model.SimpleDiskCache;
 
 import javax.swing.*;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
+import java.io.*;
+import java.lang.reflect.Array;
+import java.util.*;
 import java.util.List;
 
 /**
@@ -40,14 +47,12 @@ public class MainWindow extends Component {
     private JList checkBoxList;
     private JButton calculateButton;
     private JScrollPane mcdmTableContainer;
-    private JMenu aboutMenu;
+    private JMenu helpMenu;
     private JMenu fileMenu;
     private JMenuItem refreshDataMenuItem;
-    private JMenuItem exportMenuItem;
-    private JMenuItem showChartMenuItem;
-    private JMenuItem exitMenuItem;
     private JButton indicatorsExportButton;
     private JButton mcdmExportButton;
+    private JMenuItem aboutMenuItem;
     private String indicatorsCurrentSelection;
 
     public static void main(String[] args) {
@@ -102,7 +107,6 @@ public class MainWindow extends Component {
         panel1.add(indicatorsShowChartButton, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_EAST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final Spacer spacer1 = new Spacer();
         panel1.add(spacer1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
-        indicatorsExportButton = new JButton();
         indicatorsExportButton.setEnabled(false);
         indicatorsExportButton.setText("Export");
         indicatorsExportButton.setMnemonic('E');
@@ -145,11 +149,16 @@ public class MainWindow extends Component {
         final JMenuBar menuBar1 = new JMenuBar();
         menuBar1.setLayout(new GridLayoutManager(1, 3, new Insets(0, 0, 0, 0), -1, -1));
         mainPanel.add(menuBar1, BorderLayout.NORTH);
-        aboutMenu = new JMenu();
-        aboutMenu.setText("About");
-        aboutMenu.setMnemonic('A');
-        aboutMenu.setDisplayedMnemonicIndex(0);
-        menuBar1.add(aboutMenu, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        helpMenu = new JMenu();
+        helpMenu.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+        helpMenu.setText("Help");
+        helpMenu.setMnemonic('H');
+        helpMenu.setDisplayedMnemonicIndex(0);
+        menuBar1.add(helpMenu, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        aboutMenuItem.setText("About");
+        aboutMenuItem.setMnemonic('A');
+        aboutMenuItem.setDisplayedMnemonicIndex(0);
+        helpMenu.add(aboutMenuItem);
         final Spacer spacer3 = new Spacer();
         menuBar1.add(spacer3, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         fileMenu = new JMenu();
@@ -158,32 +167,11 @@ public class MainWindow extends Component {
         fileMenu.setMnemonic('F');
         fileMenu.setDisplayedMnemonicIndex(0);
         menuBar1.add(fileMenu, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        refreshDataMenuItem = new JMenuItem();
         refreshDataMenuItem.setText("Refresh Data");
         refreshDataMenuItem.setMnemonic('R');
         refreshDataMenuItem.setDisplayedMnemonicIndex(0);
         refreshDataMenuItem.setToolTipText("Clears the cache");
         fileMenu.add(refreshDataMenuItem);
-        final JSeparator separator1 = new JSeparator();
-        fileMenu.add(separator1);
-        exportMenuItem = new JMenuItem();
-        exportMenuItem.setText("Export");
-        exportMenuItem.setMnemonic('E');
-        exportMenuItem.setDisplayedMnemonicIndex(0);
-        exportMenuItem.setToolTipText("Exports the current indicator values or MCDM result");
-        fileMenu.add(exportMenuItem);
-        showChartMenuItem = new JMenuItem();
-        showChartMenuItem.setText("Show Chart");
-        showChartMenuItem.setMnemonic('S');
-        showChartMenuItem.setDisplayedMnemonicIndex(0);
-        fileMenu.add(showChartMenuItem);
-        final JSeparator separator2 = new JSeparator();
-        fileMenu.add(separator2);
-        exitMenuItem = new JMenuItem();
-        exitMenuItem.setText("Exit");
-        exitMenuItem.setMnemonic('E');
-        exitMenuItem.setDisplayedMnemonicIndex(0);
-        fileMenu.add(exitMenuItem);
     }
 
     /**
@@ -222,8 +210,10 @@ public class MainWindow extends Component {
         indicatorsTableModel.addTableModelListener(tableModelEvent -> {
             if (indicatorsTableModel.getRowCount() == 0) {
                 indicatorsShowChartButton.setEnabled(false);
+                indicatorsExportButton.setEnabled(false);
             } else {
                 indicatorsShowChartButton.setEnabled(true);
+                indicatorsExportButton.setEnabled(true);
             }
         });
 
@@ -285,29 +275,7 @@ public class MainWindow extends Component {
         // Show chart button initialization
         indicatorsShowChartButton = new JButton();
         indicatorsShowChartButton.addActionListener(actionEvent -> {
-
-            ArrayList<ArrayList<Object>> dataAsBeingShown = new ArrayList<ArrayList<Object>>();
-            // Get sorted data
-            for (int i = 0; i < Math.min(10, indicatorsTable.getRowCount()); i++) {
-                // Get original index on the model
-                Integer originalIndex = indicatorsTable.getRowSorter().convertRowIndexToModel(i);
-
-                // Get each cell of this row
-                ArrayList<Object> row = new ArrayList<Object>();
-                for (int c = 0; c < indicatorsTableModel.getColumnCount(); c++) {
-                    row.add(indicatorsTableModel.getValueAt(originalIndex, c));
-                }
-                dataAsBeingShown.add(row);
-            }
-
-            Gson gsonData = new Gson();
-
-            String[] args = new String[]{
-                    indicatorsCurrentSelection,
-                    gsonData.toJson(dataAsBeingShown)
-            };
-
-            GraphWindow.main(args);
+            this._showChart();
         });
 
         // Initialize checkBoxList
@@ -347,15 +315,107 @@ public class MainWindow extends Component {
         mcdmTableModel.addColumn("Probability");
         mcdmTable.setModel(mcdmTableModel);
 
-        // Enable or disable show chart button according to table data
+        // Enable or disable show chart / Export buttons according to table data
         mcdmTableModel.addTableModelListener(tableModelEvent -> {
             if (mcdmTableModel.getRowCount() == 0) {
                 mcdmShowChartButton.setEnabled(false);
+                mcdmExportButton.setEnabled(false);
             } else {
                 mcdmShowChartButton.setEnabled(true);
+                mcdmExportButton.setEnabled(true);
             }
         });
 
+
+        // Menu actions
+        aboutMenuItem = new JMenuItem();
+        aboutMenuItem.addActionListener(actionEvent -> {
+            AboutWindow.main(null);
+        });
+        // - Clear Cache
+        refreshDataMenuItem = new JMenuItem();
+        refreshDataMenuItem.addActionListener(actionEvent -> {
+            try {
+                Facade.getInstance().refresh();
+                JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), "Cache cleared successfully.");
+            } catch (Exception e) {
+                App.throwError(e);
+            }
+
+        });
+        // - Export
+        final JFileChooser fc = new JFileChooser();
+        indicatorsExportButton = new JButton();
+        indicatorsExportButton.addActionListener(actionEvent -> {
+
+            int returnVal = fc.showSaveDialog(this);
+
+            class DataType {
+                public String name;
+                public Double value;
+            }
+
+            ArrayList<DataType> export = new ArrayList<DataType>();
+
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                File outputFile = fc.getSelectedFile();
+
+                for (int i = 0; i < indicatorsTable.getRowCount(); i++) {
+                    Integer sortIndex = indicatorsTable.getRowSorter().convertRowIndexToModel(i);
+
+                    DataType row = new DataType();
+                    row.name = (String) indicatorsTableModel.getValueAt(sortIndex, 0);
+                    row.value = (Double) indicatorsTableModel.getValueAt(sortIndex, 1);
+                    export.add(row);
+
+                }
+
+                // Export as CSV
+                CsvMapper mapper = new CsvMapper();
+                CsvSchema schema = mapper.schemaFor(DataType.class);
+                schema = schema.withColumnSeparator('\t');
+
+                // output writer
+                ObjectWriter myObjectWriter = mapper.writer(schema);
+                try {
+                    FileOutputStream tempFileOutputStream = new FileOutputStream(outputFile);
+                    BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(tempFileOutputStream, 1024);
+                    OutputStreamWriter writerOutputStream = new OutputStreamWriter(bufferedOutputStream, "UTF-8");
+                    myObjectWriter.writeValue(writerOutputStream, export);
+                }catch (Exception e){
+                    App.throwError(e);
+                }
+
+            }
+
+        });
+    }
+
+    private void _showChart() {
+
+
+        ArrayList<ArrayList<Object>> dataAsBeingShown = new ArrayList<ArrayList<Object>>();
+        // Get sorted data
+        for (int i = 0; i < Math.min(10, indicatorsTable.getRowCount()); i++) {
+            // Get original index on the model
+            Integer originalIndex = indicatorsTable.getRowSorter().convertRowIndexToModel(i);
+
+            // Get each cell of this row
+            ArrayList<Object> row = new ArrayList<Object>();
+            for (int c = 0; c < indicatorsTableModel.getColumnCount(); c++) {
+                row.add(indicatorsTableModel.getValueAt(originalIndex, c));
+            }
+            dataAsBeingShown.add(row);
+        }
+
+        Gson gsonData = new Gson();
+
+        String[] args = new String[]{
+                indicatorsCurrentSelection,
+                gsonData.toJson(dataAsBeingShown)
+        };
+
+        GraphWindow.main(args);
     }
 
     public void showAHPResults(List<Indicator> indicators, double[][] indicatorsMatrix) {

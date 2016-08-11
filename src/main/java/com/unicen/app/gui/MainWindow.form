@@ -75,7 +75,7 @@
                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                     </constraints>
                   </hspacer>
-                  <component id="910df" class="javax.swing.JButton" binding="indicatorsExportButton">
+                  <component id="910df" class="javax.swing.JButton" binding="indicatorsExportButton" custom-create="true">
                     <constraints>
                       <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                     </constraints>
@@ -191,14 +191,23 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="4b490" class="javax.swing.JMenu" binding="aboutMenu">
+          <grid id="2cdeb" class="javax.swing.JMenu" binding="helpMenu" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
             <constraints>
               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="&amp;About"/>
+              <text value="&amp;Help"/>
             </properties>
-          </component>
+            <border type="none"/>
+            <children>
+              <component id="872c1" class="javax.swing.JMenuItem" binding="aboutMenuItem" custom-create="true">
+                <constraints/>
+                <properties>
+                  <text value="&amp;About"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
           <hspacer id="d4185">
             <constraints>
               <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
@@ -213,38 +222,11 @@
             </properties>
             <border type="none"/>
             <children>
-              <component id="3f34e" class="javax.swing.JMenuItem" binding="refreshDataMenuItem">
+              <component id="3f34e" class="javax.swing.JMenuItem" binding="refreshDataMenuItem" custom-create="true">
                 <constraints/>
                 <properties>
                   <text value="&amp;Refresh Data"/>
                   <toolTipText value="Clears the cache"/>
-                </properties>
-              </component>
-              <component id="3107b" class="javax.swing.JSeparator">
-                <constraints/>
-                <properties/>
-              </component>
-              <component id="b2c8a" class="javax.swing.JMenuItem" binding="exportMenuItem">
-                <constraints/>
-                <properties>
-                  <text value="&amp;Export"/>
-                  <toolTipText value="Exports the current indicator values or MCDM result"/>
-                </properties>
-              </component>
-              <component id="42499" class="javax.swing.JMenuItem" binding="showChartMenuItem">
-                <constraints/>
-                <properties>
-                  <text value="&amp;Show Chart"/>
-                </properties>
-              </component>
-              <component id="a32e0" class="javax.swing.JSeparator">
-                <constraints/>
-                <properties/>
-              </component>
-              <component id="c2192" class="javax.swing.JMenuItem" binding="exitMenuItem">
-                <constraints/>
-                <properties>
-                  <text value="&amp;Exit"/>
                 </properties>
               </component>
             </children>

@@ -28,16 +28,6 @@
                   <text value="&amp;Export Image"/>
                 </properties>
               </component>
-              <component id="c3325" class="javax.swing.JSeparator">
-                <constraints/>
-                <properties/>
-              </component>
-              <component id="399fe" class="javax.swing.JMenuItem" binding="exitMenuItem">
-                <constraints/>
-                <properties>
-                  <text value="&amp;Exit"/>
-                </properties>
-              </component>
             </children>
           </grid>
           <hspacer id="415d">
@@ -45,14 +35,23 @@
               <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
           </hspacer>
-          <component id="d7fb5" class="javax.swing.JMenu" binding="aboutMenuItem">
+          <grid id="1b4d4" class="javax.swing.JMenu" binding="helpMenu" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
             <constraints>
               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="&amp;About"/>
+              <text value="&amp;Help"/>
             </properties>
-          </component>
+            <border type="none"/>
+            <children>
+              <component id="d7fb5" class="javax.swing.JMenu" binding="aboutMenuItem">
+                <constraints/>
+                <properties>
+                  <text value="&amp;About"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
         </children>
       </grid>
       <grid id="710ae" class="org.jfree.chart.ChartPanel" binding="chartPanel" custom-create="true" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">

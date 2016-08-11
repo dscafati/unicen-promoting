@@ -33,6 +33,10 @@ public class Facade {
     // Singleton
     private static Facade instance = null;
 
+    public void refresh() throws IOException{
+        this.cache.clear();
+    }
+
     public static Facade getInstance() throws Exception {
         if (instance == null) {
             instance = new Facade();

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.unicen.app.gui.AboutWindow">
+  <grid id="cbd77" binding="contentPane" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="10" left="10" bottom="10" right="10"/>
+    <constraints>
+      <xy x="48" y="54" width="436" height="420"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <grid id="94766" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <hspacer id="98af6">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+          </hspacer>
+          <grid id="9538f" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="e7465" class="javax.swing.JButton" binding="buttonOK">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="OK"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+        </children>
+      </grid>
+      <grid id="e3588" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="35da9" class="javax.swing.JTextPane" binding="unicenPromotingToolVTextPane" default-binding="true">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <contentType value="text/html"/>
+              <editable value="false"/>
+              <text value="&lt;html&gt;&#10;  &lt;head&gt;&#10;    &#10;  &lt;/head&gt;&#10;  &lt;body&gt;&#10;    &lt;h1&gt;&#10;      Unicen Promoting tool &lt;small&gt;V 1.0&lt;/small&gt;&#10;    &lt;/h1&gt;&#10;    &lt;p&gt;&#10;      MCDM system for the Unicen college (Bs. As., Arg) to help promoting &#10;      itself among high-schools&#10;    &lt;/p&gt;&#10;    &lt;dl&gt;&#10;      &lt;dt&gt;&#10;        Licence:&#10;      &lt;/dt&gt;&#10;      &lt;dd&gt;&#10;        Gnu&#10;      &lt;/dd&gt;&#10;      &lt;dt&gt;&#10;        Release:&#10;      &lt;/dt&gt;&#10;      &lt;dd&gt;&#10;        2016-08-11&#10;      &lt;/dd&gt;&#10;      &lt;dt&gt;&#10;        Authors:&#10;      &lt;/dt&gt;&#10;      &lt;dd&gt;&#10;        &lt;dl&gt;&#10;          &lt;dt&gt;&#10;            Roman y Zubeldia, Alfonso&#10;          &lt;/dt&gt;&#10;          &lt;dd&gt;&#10;            aromanz@alumnos.exa.unicen.edu.ar&#10;          &lt;/dd&gt;&#10;          &lt;dt&gt;&#10;            Scafati Diego&#10;          &lt;/dt&gt;&#10;          &lt;dd&gt;&#10;            dscafati@alumnos.exa.unicen.edu.ar&#10;          &lt;/dd&gt;&#10;        &lt;/dl&gt;&#10;      &lt;/dd&gt;&#10;    &lt;/dl&gt;&#10;    &lt;p&gt;&#10;      &lt;a href=&quot;https://github.com/dscafati/unicen-promoting&quot;&gt;See on github: &#10;      https://github.com/dscafati/unicen-promoting&lt;/a&gt;&#10;    &lt;/p&gt;&#10;  &lt;/body&gt;&#10;&lt;/html&gt;&#10;"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+    </children>
+  </grid>
+</form>

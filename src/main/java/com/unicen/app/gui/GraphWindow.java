@@ -34,7 +34,7 @@ public class GraphWindow {
     private JMenu fileMenu;
     private JMenu aboutMenuItem;
     private JMenuItem exportMenuItem;
-    private JMenuItem exitMenuItem;
+    private JMenu helpMenu;
 
     private static Object[][] data;
     private static String indicator;
@@ -130,20 +130,19 @@ public class GraphWindow {
         exportMenuItem.setMnemonic('E');
         exportMenuItem.setDisplayedMnemonicIndex(0);
         fileMenu.add(exportMenuItem);
-        final JSeparator separator1 = new JSeparator();
-        fileMenu.add(separator1);
-        exitMenuItem = new JMenuItem();
-        exitMenuItem.setText("Exit");
-        exitMenuItem.setMnemonic('E');
-        exitMenuItem.setDisplayedMnemonicIndex(0);
-        fileMenu.add(exitMenuItem);
         final Spacer spacer1 = new Spacer();
         menuBar.add(spacer1, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+        helpMenu = new JMenu();
+        helpMenu.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+        helpMenu.setText("Help");
+        helpMenu.setMnemonic('H');
+        helpMenu.setDisplayedMnemonicIndex(0);
+        menuBar.add(helpMenu, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         aboutMenuItem = new JMenu();
         aboutMenuItem.setText("About");
         aboutMenuItem.setMnemonic('A');
         aboutMenuItem.setDisplayedMnemonicIndex(0);
-        menuBar.add(aboutMenuItem, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        helpMenu.add(aboutMenuItem);
         chartPanel.setDomainZoomable(true);
         graphPanel.add(chartPanel, BorderLayout.CENTER);
     }

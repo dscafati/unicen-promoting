@@ -26,10 +26,10 @@ public class PairwiseWindow {
     private JTable editableMatrix;
     private JTextPane helpText;
     private JMenu FileMenu;
-    private JMenu AboutMenu;
     private JMenuItem openMenuItem;
     private JMenuItem saveMenuItem;
-    private JMenuItem confirmMenuItem;
+    private JMenu helpMenu;
+    private JMenuItem aboutMenuItem;
     private List<String> selected;
     private MainWindow mainWindow;
 
@@ -114,8 +114,14 @@ public class PairwiseWindow {
 
             //mainWindow.showAHPResults(indicators, indicatorsMatrix);
 
+
         });
 
+        // Menu
+        aboutMenuItem = new JMenuItem();
+        aboutMenuItem.addActionListener(actionEvent1 -> {
+            AboutWindow.main(null);
+        });
     }
 
 
@@ -149,20 +155,18 @@ public class PairwiseWindow {
         saveMenuItem.setMnemonic('S');
         saveMenuItem.setDisplayedMnemonicIndex(0);
         FileMenu.add(saveMenuItem);
-        final JSeparator separator1 = new JSeparator();
-        FileMenu.add(separator1);
-        confirmMenuItem = new JMenuItem();
-        confirmMenuItem.setText("Confirm");
-        confirmMenuItem.setMnemonic('C');
-        confirmMenuItem.setDisplayedMnemonicIndex(0);
-        FileMenu.add(confirmMenuItem);
         final Spacer spacer1 = new Spacer();
         menuBar1.add(spacer1, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
-        AboutMenu = new JMenu();
-        AboutMenu.setText("About");
-        AboutMenu.setMnemonic('A');
-        AboutMenu.setDisplayedMnemonicIndex(0);
-        menuBar1.add(AboutMenu, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        helpMenu = new JMenu();
+        helpMenu.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+        helpMenu.setText("Help");
+        helpMenu.setMnemonic('H');
+        helpMenu.setDisplayedMnemonicIndex(0);
+        menuBar1.add(helpMenu, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        aboutMenuItem.setText("About");
+        aboutMenuItem.setMnemonic('A');
+        aboutMenuItem.setDisplayedMnemonicIndex(0);
+        helpMenu.add(aboutMenuItem);
         tabbedPane1 = new JTabbedPane();
         pairwisePanel.add(tabbedPane1, BorderLayout.CENTER);
         final JPanel panel1 = new JPanel();
