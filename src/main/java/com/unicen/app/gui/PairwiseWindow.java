@@ -89,8 +89,12 @@ public class PairwiseWindow {
 
 
             List<Indicator> indicators = new ArrayList<Indicator>();
-            for (String indicator : selected) {
-                indicators.add(Factory.get(indicator));
+            HashMap<String, String> map = Factory.listIndicators();
+
+            for (String key : map.keySet()) {
+                String indicator = map.get(key);
+                if (selected.contains(indicator))
+                    indicators.add(Factory.get(key));
             }
 
             int n = selected.size();

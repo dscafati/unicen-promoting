@@ -295,6 +295,7 @@ public class MainWindow extends Component {
         for (Decision d : result) {
             model.addRow(new Object[]{d.getSchoolName(), d.getProbability()});
         }
+
     }
 
 }

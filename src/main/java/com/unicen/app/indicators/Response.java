@@ -32,4 +32,10 @@ public class Response {
         v.add(this.getValue());
         return v;
     }
+
+    //para pruebas. Quizas despues no haga falta
+    public boolean equals (Object o) {
+        Response other = (Response) o;
+        return this.getSchoolId().intValue()==other.getSchoolId().intValue();
+    }
 }
