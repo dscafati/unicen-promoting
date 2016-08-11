@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
+import com.intellij.uiDesigner.core.Spacer;
 import com.unicen.app.indicators.Factory;
 import com.unicen.app.indicators.Indicator;
 import org.jfree.chart.ChartFactory;
@@ -29,6 +30,11 @@ import java.util.List;
 public class GraphWindow {
     private ChartPanel chartPanel;
     private JPanel graphPanel;
+    private JMenuBar menuBar;
+    private JMenu fileMenu;
+    private JMenu aboutMenuItem;
+    private JMenuItem exportMenuItem;
+    private JMenuItem exitMenuItem;
 
     private static Object[][] data;
     private static String indicator;
@@ -46,10 +52,10 @@ public class GraphWindow {
 
     }
 
-    private JFreeChart _drawAsPie(){
+    private JFreeChart _drawAsPie() {
         DefaultPieDataset dataset = new DefaultPieDataset();
-        for( Object[] row : GraphWindow.data ) {
-            dataset.setValue((String)row[0], ((BigDecimal)row[1]).doubleValue());
+        for (Object[] row : GraphWindow.data) {
+            dataset.setValue((String) row[0], ((BigDecimal) row[1]).doubleValue());
         }
 
         return ChartFactory.createPieChart3D(
@@ -61,10 +67,10 @@ public class GraphWindow {
         );
     }
 
-    private JFreeChart _drawAsBar(){
+    private JFreeChart _drawAsBar() {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        for( Object[] row : GraphWindow.data ){
-            dataset.addValue(((BigDecimal)row[1]).doubleValue(),(String)row[0],"");
+        for (Object[] row : GraphWindow.data) {
+            dataset.addValue(((BigDecimal) row[1]).doubleValue(), (String) row[0], "");
         }
         HashMap<String, Object> atts = Factory.get(GraphWindow.indicator).getExtraGraphData();
 
@@ -81,14 +87,14 @@ public class GraphWindow {
     }
 
     private void createUIComponents() {
-        switch (Factory.get(GraphWindow.indicator).getGraphType()){
+        switch (Factory.get(GraphWindow.indicator).getGraphType()) {
             case Indicator.AS_PIE:
                 chartPanel = new ChartPanel(_drawAsPie());
-            break;
+                break;
             case Indicator.AS_BAR:
             default:
                 chartPanel = new ChartPanel(_drawAsBar());
-            break;
+                break;
         }
     }
 
@@ -109,9 +115,37 @@ public class GraphWindow {
     private void $$$setupUI$$$() {
         createUIComponents();
         graphPanel = new JPanel();
-        graphPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        graphPanel.setLayout(new BorderLayout(0, 0));
+        menuBar = new JMenuBar();
+        menuBar.setLayout(new GridLayoutManager(1, 3, new Insets(0, 0, 0, 0), -1, -1));
+        graphPanel.add(menuBar, BorderLayout.NORTH);
+        fileMenu = new JMenu();
+        fileMenu.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+        fileMenu.setText("File");
+        fileMenu.setMnemonic('F');
+        fileMenu.setDisplayedMnemonicIndex(0);
+        menuBar.add(fileMenu, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        exportMenuItem = new JMenuItem();
+        exportMenuItem.setText("Export Image");
+        exportMenuItem.setMnemonic('E');
+        exportMenuItem.setDisplayedMnemonicIndex(0);
+        fileMenu.add(exportMenuItem);
+        final JSeparator separator1 = new JSeparator();
+        fileMenu.add(separator1);
+        exitMenuItem = new JMenuItem();
+        exitMenuItem.setText("Exit");
+        exitMenuItem.setMnemonic('E');
+        exitMenuItem.setDisplayedMnemonicIndex(0);
+        fileMenu.add(exitMenuItem);
+        final Spacer spacer1 = new Spacer();
+        menuBar.add(spacer1, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+        aboutMenuItem = new JMenu();
+        aboutMenuItem.setText("About");
+        aboutMenuItem.setMnemonic('A');
+        aboutMenuItem.setDisplayedMnemonicIndex(0);
+        menuBar.add(aboutMenuItem, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         chartPanel.setDomainZoomable(true);
-        graphPanel.add(chartPanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        graphPanel.add(chartPanel, BorderLayout.CENTER);
     }
 
     /**

@@ -25,6 +25,11 @@ public class PairwiseWindow {
     private JTabbedPane tabbedPane1;
     private JTable editableMatrix;
     private JTextPane helpText;
+    private JMenu FileMenu;
+    private JMenu AboutMenu;
+    private JMenuItem openMenuItem;
+    private JMenuItem saveMenuItem;
+    private JMenuItem confirmMenuItem;
     private List<String> selected;
     private MainWindow mainWindow;
 
@@ -124,13 +129,42 @@ public class PairwiseWindow {
     private void $$$setupUI$$$() {
         createUIComponents();
         pairwisePanel = new JPanel();
-        pairwisePanel.setLayout(new GridLayoutManager(2, 3, new Insets(0, 0, 0, 0), -1, -1));
-        confirmButton.setText("Confirm");
-        pairwisePanel.add(confirmButton, new GridConstraints(1, 0, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        pairwisePanel.setLayout(new BorderLayout(0, 0));
+        final JMenuBar menuBar1 = new JMenuBar();
+        menuBar1.setLayout(new GridLayoutManager(1, 3, new Insets(0, 0, 0, 0), -1, -1));
+        pairwisePanel.add(menuBar1, BorderLayout.NORTH);
+        FileMenu = new JMenu();
+        FileMenu.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+        FileMenu.setText("File");
+        FileMenu.setMnemonic('F');
+        FileMenu.setDisplayedMnemonicIndex(0);
+        menuBar1.add(FileMenu, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        openMenuItem = new JMenuItem();
+        openMenuItem.setText("Open");
+        openMenuItem.setMnemonic('O');
+        openMenuItem.setDisplayedMnemonicIndex(0);
+        FileMenu.add(openMenuItem);
+        saveMenuItem = new JMenuItem();
+        saveMenuItem.setText("Save as...");
+        saveMenuItem.setMnemonic('S');
+        saveMenuItem.setDisplayedMnemonicIndex(0);
+        FileMenu.add(saveMenuItem);
+        final JSeparator separator1 = new JSeparator();
+        FileMenu.add(separator1);
+        confirmMenuItem = new JMenuItem();
+        confirmMenuItem.setText("Confirm");
+        confirmMenuItem.setMnemonic('C');
+        confirmMenuItem.setDisplayedMnemonicIndex(0);
+        FileMenu.add(confirmMenuItem);
         final Spacer spacer1 = new Spacer();
-        pairwisePanel.add(spacer1, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        menuBar1.add(spacer1, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+        AboutMenu = new JMenu();
+        AboutMenu.setText("About");
+        AboutMenu.setMnemonic('A');
+        AboutMenu.setDisplayedMnemonicIndex(0);
+        menuBar1.add(AboutMenu, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         tabbedPane1 = new JTabbedPane();
-        pairwisePanel.add(tabbedPane1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(200, 200), null, 0, false));
+        pairwisePanel.add(tabbedPane1, BorderLayout.CENTER);
         final JPanel panel1 = new JPanel();
         panel1.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         tabbedPane1.addTab("Comparison Matrix", panel1);
@@ -146,6 +180,9 @@ public class PairwiseWindow {
         helpText.setEditable(false);
         helpText.setText("Usage:\n*******\n\nThe comparison matrix allows to make paired comparisons between the choosen indicators.\n\n1- Choose a scale to make judgements. Preferrable: 1 to 9\n\n2- The value in Matrix[i][j] represents the judgement value between the indicator in the row \"i\" and the indicator in the row \"j\". This values must be filled up using the following rules:\n\n-if indicator \"i\" is better than indicator \"j\", put the actual judgement value.\n- if indicator \"j\" is better than indicator \"i\", put the reciprocal judgement value.\n\n3- It is only necesary to fill up the upper triangular matrix, since the diagonal elements are always 1 and the lower matrix is reciprocal to the upper diagonal.\n\n");
         scrollPane2.setViewportView(helpText);
+        confirmButton.setEnabled(false);
+        confirmButton.setText("Confirm");
+        pairwisePanel.add(confirmButton, BorderLayout.SOUTH);
     }
 
     /**
