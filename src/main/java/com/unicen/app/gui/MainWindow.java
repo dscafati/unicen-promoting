@@ -127,6 +127,7 @@ public class MainWindow extends Component {
         mcdmTableContainer = new JScrollPane();
         mcdmPanel.add(mcdmTableContainer, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         mcdmTable.setEnabled(false);
+        mcdmTable.setFillsViewportHeight(true);
         mcdmTable.setShowVerticalLines(false);
         mcdmTableContainer.setViewportView(mcdmTable);
         final JPanel panel2 = new JPanel();
@@ -382,7 +383,7 @@ public class MainWindow extends Component {
                     BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(tempFileOutputStream, 1024);
                     OutputStreamWriter writerOutputStream = new OutputStreamWriter(bufferedOutputStream, "UTF-8");
                     myObjectWriter.writeValue(writerOutputStream, export);
-                }catch (Exception e){
+                } catch (Exception e) {
                     App.throwError(e);
                 }
 
