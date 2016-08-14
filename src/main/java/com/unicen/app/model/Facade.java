@@ -10,12 +10,14 @@ import groovy.sql.Sql;
 import java.io.File;
 import java.io.IOException;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class Facade {
     private Script script;
     private SimpleDiskCache cache;
     private Boolean initializedScriptFlag = false;
+    private Sql internalDB;
 
     /**
      * Constructor
@@ -88,6 +90,17 @@ public class Facade {
         } catch (Exception e) {
         }
 
+        // - SQLITE
+        try {
+            //this.internalDB = Sql.newInstance("jdbc:sqlite:internal.db", "org.sqlite.JDBC");
+            // MOCK TABLE
+            this.internalDB = Sql.newInstance("jdbc:mysql://localhost/alumnos_exa_sqlite?serverTimezone=UTC&allowMultiQueries=true", "root", "root", "com.mysql.cj.jdbc.Driver");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            // We asume it will always work
+        }
+
 
         // Groovy Script
         Binding binding = new Binding();
@@ -98,6 +111,9 @@ public class Facade {
         GroovyShell shell = new GroovyShell(binding);
 
         this.script = shell.parse(new File("model_scripts/script.groovy"));
+
+        Object[] args = {this.internalDB};
+        script.invokeMethod("initialization", args );
     }
 
     public List<Response> getAverage() throws IOException{
@@ -105,7 +121,8 @@ public class Facade {
             return this.cache.getResponse("average");
         } else {
             _initializeScripts();
-            List<Response> result = (List<Response>) script.invokeMethod("getAllAverageIndicator", null);
+            Object[] args = {this.internalDB};
+            List<Response> result = (List<Response>) script.invokeMethod("getAllAverageIndicator", args);
             this.cache.putResponse("average", result);
             return result;
         }
@@ -116,7 +133,8 @@ public class Facade {
             return this.cache.getResponse("progress");
         } else {
             _initializeScripts();
-            List<Response> result = (List<Response>) script.invokeMethod("getAverageDegreeOfProgressIndicator", null);
+            Object[] args = {this.internalDB};
+            List<Response> result = (List<Response>) script.invokeMethod("getAverageDegreeOfProgressIndicator", args);
             this.cache.putResponse("progress", result);
             return result;
         }
@@ -127,7 +145,8 @@ public class Facade {
             return this.cache.getResponse("duration");
         } else {
             _initializeScripts();
-            List<Response> result = (List<Response>) script.invokeMethod("getAverageDegreeDurationIndicator", null);
+            Object[] args = {this.internalDB};
+            List<Response> result = (List<Response>) script.invokeMethod("getAverageDegreeDurationIndicator", args);
             this.cache.putResponse("duration", result);
             return result;
         }
@@ -138,7 +157,8 @@ public class Facade {
             return this.cache.getResponse("average-graduated");
         } else {
             _initializeScripts();
-            List<Response> result = (List<Response>) script.invokeMethod("getGraduatedAverageIndicator", null);
+            Object[] args = {this.internalDB};
+            List<Response> result = (List<Response>) script.invokeMethod("getGraduatedAverageIndicator", args);
             this.cache.putResponse("average-graduated", result);
             return result;
         }
@@ -149,7 +169,8 @@ public class Facade {
             return this.cache.getResponse("average-graduated-alt");
         } else {
             _initializeScripts();
-            List<Response> result = (List<Response>) script.invokeMethod("getGraduatedAverageAltIndicator", null);
+            Object[] args = {this.internalDB};
+            List<Response> result = (List<Response>) script.invokeMethod("getGraduatedAverageAltIndicator", args);
             this.cache.putResponse("average-graduated-alt", result);
             return result;
         }
@@ -159,7 +180,8 @@ public class Facade {
             return this.cache.getResponse("desertion");
         } else {
             _initializeScripts();
-            List<Response> result = (List<Response>) script.invokeMethod("getDesertionDegreeIndicator", null);
+            Object[] args = {this.internalDB};
+            List<Response> result = (List<Response>) script.invokeMethod("getDesertionDegreeIndicator", args);
             this.cache.putResponse("desertion", result);
             return result;
         }
