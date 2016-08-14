@@ -143,6 +143,7 @@
                     <constraints/>
                     <properties>
                       <enabled value="false"/>
+                      <fillsViewportHeight value="true"/>
                       <showVerticalLines value="false"/>
                     </properties>
                   </component>

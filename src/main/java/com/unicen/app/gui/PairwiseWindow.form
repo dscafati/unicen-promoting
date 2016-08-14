@@ -22,13 +22,13 @@
             </properties>
             <border type="none"/>
             <children>
-              <component id="68076" class="javax.swing.JMenuItem" binding="openMenuItem">
+              <component id="68076" class="javax.swing.JMenuItem" binding="openMenuItem" custom-create="true">
                 <constraints/>
                 <properties>
                   <text value="&amp;Open"/>
                 </properties>
               </component>
-              <component id="bd3a" class="javax.swing.JMenuItem" binding="saveMenuItem">
+              <component id="bd3a" class="javax.swing.JMenuItem" binding="saveMenuItem" custom-create="true">
                 <constraints/>
                 <properties>
                   <text value="&amp;Save as..."/>
@@ -82,7 +82,9 @@
                 <children>
                   <component id="a1173" class="javax.swing.JTable" binding="editableMatrix" custom-create="true">
                     <constraints/>
-                    <properties/>
+                    <properties>
+                      <fillsViewportHeight value="true"/>
+                    </properties>
                   </component>
                 </children>
               </scrollpane>
