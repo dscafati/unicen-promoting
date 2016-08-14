@@ -25,6 +25,7 @@ public class MatrixModel extends DefaultTableModel{
 
     @Override
     public void setValueAt (Object aValue, int row, int column) {
+
         super.setValueAt(aValue,row,column);
 
         if (row>0 && column >0 && (row!=column)) {

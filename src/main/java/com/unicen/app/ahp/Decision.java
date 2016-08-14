@@ -31,9 +31,9 @@ public class Decision implements Comparable<Decision> {
 	@Override
 	public int compareTo(Decision o) {
 		if (this.getProbability() < o.getProbability())
-			return -1;
-		if (this.getProbability() > o.getProbability())
 			return 1;
+		if (this.getProbability() > o.getProbability())
+			return -1;
 		return 0;
 	}
 

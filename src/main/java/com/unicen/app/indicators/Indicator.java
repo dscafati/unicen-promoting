@@ -49,4 +49,5 @@ public abstract class Indicator {
     public abstract String getGraphType();
 
     public HashMap<String, Object> getExtraGraphData(){ return new HashMap<String, Object>(); }
+
 }

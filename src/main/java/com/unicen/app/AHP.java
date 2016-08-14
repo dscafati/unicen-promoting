@@ -92,15 +92,18 @@ public class AHP {
 	 */
 	private void calculateVectorForIndicator (int indicator) {
 		Indicator actualIndicator = indicators.get(indicator);
-		
 		//obtaining responses from this indicator
 		List <Response> responses = new ArrayList<Response>();
+
+
 		try {
 			responses.addAll(actualIndicator.evaluateAll());
 		} catch (Exception e){
 			App.throwError(e);
 		}
-	
+
+
+
 		//creating the comparison matrix for this indicator
 		int n = responses.size();
 		double[][] matrix = new double[n][n];
@@ -114,7 +117,8 @@ public class AHP {
 		/*
 		 * Starting to compute the priority vector for this matrix
 		 */
-		double[] priorityVector = new double[n];
+
+		double [] priorityVector;
 		
 		//calculating the sum of columns
 		double [] sumOfColumn = new double [n];
@@ -177,18 +181,20 @@ public class AHP {
 	
 	public List<Decision> calculateDecision () {
 		List<Decision> decision = new ArrayList<Decision>();
-		
+
 		//se calculan todos los vectores de prioridad
 		for (int i=0; i<indicators.size(); i++) 
 			calculateVectorForIndicator(i);
-		
+
+
 		//se calcula la decision final y de paso se crea la lista a devolver
 		for (Integer id : elements.keySet()) {
 			decision.add(new Decision (id, names.get(id),this.getProbability(id)));
 		}
-		
+
+
 		Collections.sort(decision);
-		
+
 		return decision;
 	}
 	
