@@ -56,7 +56,7 @@ public class MainWindow extends Component {
     private String indicatorsCurrentSelection;
 
     public static void main(String[] args) {
-        JFrame frame = new JFrame("MainWindow");
+        JFrame frame = new JFrame("Unicen Promoting Tool");
         frame.setContentPane(new MainWindow().mainPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
@@ -422,17 +422,21 @@ public class MainWindow extends Component {
     public void showAHPResults(List<Indicator> indicators, double[][] indicatorsMatrix) {
         // Limpia la tabla
         DefaultTableModel model = (DefaultTableModel) mcdmTable.getModel();
-        for (int i = 0; i < model.getRowCount(); i++)
-            model.removeRow(i);
+        while (model.getRowCount() > 0) {
+            model.removeRow(0);
+        }
+
+
 
         // Calcula AHP
         AHP ahp = new AHP(indicators, indicatorsMatrix);
         List<Decision> result = ahp.calculateDecision();
 
         // Muestra la tabla
-        for (Decision d : result) {
+        for (Decision d: result) {
             model.addRow(new Object[]{d.getSchoolName(), d.getProbability()});
         }
+
 
     }
 

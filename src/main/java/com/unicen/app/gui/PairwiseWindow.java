@@ -8,6 +8,7 @@ import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
+//import com.sun.tools.javac.comp.Check;
 import com.unicen.app.App;
 import com.unicen.app.indicators.Factory;
 import com.unicen.app.indicators.Indicator;
@@ -38,7 +39,7 @@ public class PairwiseWindow {
     private JMenuItem saveMenuItem;
     private JMenu helpMenu;
     private JMenuItem aboutMenuItem;
-    private List<String> selected;
+    private CheckBoxList checkBoxList;
     private MainWindow mainWindow;
 
     /**
@@ -99,7 +100,7 @@ public class PairwiseWindow {
         helpText.setEditable(false);
         helpText.setText("Usage:\n*******\n\nThe comparison matrix allows to make paired comparisons between the choosen indicators.\n\n1- Choose a scale to make judgements. Preferrable: 1 to 9\n\n2- The value in Matrix[i][j] represents the judgement value between the indicator in the row \"i\" and the indicator in the row \"j\". This values must be filled up using the following rules:\n\n-if indicator \"i\" is better than indicator \"j\", put the actual judgement value.\n- if indicator \"j\" is better than indicator \"i\", put the reciprocal judgement value.\n\n3- It is only necesary to fill up the upper triangular matrix, since the diagonal elements are always 1 and the lower matrix is reciprocal to the upper diagonal.\n\n");
         scrollPane2.setViewportView(helpText);
-        confirmButton.setEnabled(false);
+        confirmButton.setEnabled(true);
         confirmButton.setText("Confirm");
         pairwisePanel.add(confirmButton, BorderLayout.SOUTH);
     }
@@ -126,18 +127,18 @@ public class PairwiseWindow {
 
     public PairwiseWindow(MainWindow mw, CheckBoxList checkBoxList) {
         $$$setupUI$$$();
-        this.selected = checkBoxList.choosenValues();
+        this.checkBoxList = checkBoxList;
         this.mainWindow = mw;
     }
 
     public void main() {
-        JFrame frame = new JFrame("PairwiseWindow");
+        JFrame frame = new JFrame("Criteria Comparison");
         frame.setMinimumSize(new Dimension(300, 300));
         frame.setContentPane(pairwisePanel);
         frame.pack();
         frame.setVisible(true);
         helpText.setCaretPosition(0);
-
+        List<String> selected = this.checkBoxList.choosenValues();
         int n = selected.size() + 1;
         MatrixModel tableModel = new MatrixModel(n, n);
 
@@ -177,13 +178,17 @@ public class PairwiseWindow {
 
 
         confirmButton.addActionListener(actionEvent -> {
+            List<String> selected = this.checkBoxList.choosenValues();
             Integer N = selected.size();
             //chequear la matriz
             /*Si está correcta*/
             List<Indicator> indicators = new ArrayList<Indicator>();
 
-            for (String indicator : selected) {
-                indicators.add(Factory.get(indicator));
+            HashMap<String, String> map = Factory.listIndicators();
+            for (String key : map.keySet()) {
+                String indicator = map.get(key);
+                if (selected.contains(indicator))
+                    indicators.add(Factory.get(key));
             }
 
             double[][] indicatorsMatrix = new double[N][N];
@@ -198,7 +203,8 @@ public class PairwiseWindow {
                     indicatorsMatrix[i - 1][j - 1] = value.doubleValue();
                 }
 
-            //mainWindow.showAHPResults(indicators, indicatorsMatrix);
+            mainWindow.showAHPResults(indicators, indicatorsMatrix);
+            this.confirmButton.setEnabled(false);
 
 
         });
@@ -211,6 +217,7 @@ public class PairwiseWindow {
 
         saveMenuItem = new JMenuItem();
         saveMenuItem.addActionListener(actionEvent -> {
+            List<String> selected = this.checkBoxList.choosenValues();
             Integer N = selected.size();
 
             JFileChooser fc = new JFileChooser();
