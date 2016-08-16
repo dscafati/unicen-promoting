@@ -16,6 +16,7 @@ public class Facade {
     private Script script;
     private SimpleDiskCache cache;
     private Boolean initializedScriptFlag = false;
+    private Boolean initializedDbFlag = false;
 
     /**
      * Constructor
@@ -63,7 +64,7 @@ public class Facade {
         String password = Config.getProperty("mysql_password");
         String db = Config.getProperty("mysql_db");
         try {
-            mysqlDB = Sql.newInstance("jdbc:mysql://" + host + "/" + db + "?serverTimezone=UTC", user, password, "com.mysql.cj.jdbc.Driver");
+            mysqlDB = Sql.newInstance("jdbc:mysql://" + host + "/" + db + "?serverTimezone=UTC&allowMultiQueries=true", user, password, "com.mysql.cj.jdbc.Driver");
         } catch (Exception e) {
         }
 
@@ -73,7 +74,7 @@ public class Facade {
         password = Config.getProperty("pgsql_password");
         db = Config.getProperty("pgsql_db");
         try {
-            pgsqlDB = Sql.newInstance("jdbc:postgresql://" + host + "/" + db + "?serverTimezone=UTC", user, password, "org.postgresql.Driver");
+            pgsqlDB = Sql.newInstance("jdbc:postgresql://" + host + "/" + db + "?serverTimezone=UTC&allowMultiQueries=true", user, password, "org.postgresql.Driver");
         } catch (Exception e) {
         }
 
@@ -84,10 +85,8 @@ public class Facade {
         password = Config.getProperty("informix_password");
         db = Config.getProperty("informix_db");
         try {
-            informixDB = Sql.newInstance("jdbc:informix-sqli://" + host + "/" + db + "?serverTimezone=UTC", user, password, "com.informix.jdbc.IfxDriver");
-        } catch (Exception e) {
-        }
-
+            informixDB = Sql.newInstance("jdbc:informix-sqli://" + host + "/" + db + "?serverTimezone=UTC&allowMultiQueries=true", user, password, "com.informix.jdbc.IfxDriver");
+        } catch (Exception e) { }
 
         // Groovy Script
         Binding binding = new Binding();
@@ -100,66 +99,71 @@ public class Facade {
         this.script = shell.parse(new File("model_scripts/script.groovy"));
     }
 
-    public List<Response> getAverage() throws IOException{
+    private List<Response> invokeScript( String method ) throws Exception{
+        _initializeScripts();
+        if(!initializedDbFlag) {
+            script.invokeMethod("beforeIndicator", null);
+            initializedDbFlag=true;
+        }
+        List<Response> result = (List<Response>) script.invokeMethod(method, null);
+        return result;
+    }
+
+    public List<Response> getAverage() throws Exception {
         if (this.cache.contains("average")) {
             return this.cache.getResponse("average");
         } else {
-            _initializeScripts();
-            List<Response> result = (List<Response>) script.invokeMethod("getAllAverageIndicator", null);
+            List<Response> result = invokeScript("getAllAverageIndicator");
             this.cache.putResponse("average", result);
             return result;
         }
     }
 
-    public List<Response> getProgress() throws IOException{
+    public List<Response> getProgress() throws Exception{
         if (this.cache.contains("progress")) {
             return this.cache.getResponse("progress");
         } else {
-            _initializeScripts();
-            List<Response> result = (List<Response>) script.invokeMethod("getAverageDegreeOfProgressIndicator", null);
+            List<Response> result = invokeScript("getAverageDegreeOfProgressIndicator");
             this.cache.putResponse("progress", result);
             return result;
         }
     }
 
-    public List<Response> getDuration() throws IOException {
+    public List<Response> getDuration() throws Exception {
         if (this.cache.contains("duration")) {
             return this.cache.getResponse("duration");
         } else {
-            _initializeScripts();
-            List<Response> result = (List<Response>) script.invokeMethod("getAverageDegreeDurationIndicator", null);
+            List<Response> result = invokeScript("getAverageDegreeDurationIndicator");
             this.cache.putResponse("duration", result);
             return result;
         }
     }
 
-    public List<Response> getGraduatedAverage() throws IOException {
+    public List<Response> getGraduatedAverage() throws Exception {
         if (this.cache.contains("average-graduated")) {
             return this.cache.getResponse("average-graduated");
         } else {
-            _initializeScripts();
-            List<Response> result = (List<Response>) script.invokeMethod("getGraduatedAverageIndicator", null);
+            List<Response> result = invokeScript("getGraduatedAverageIndicator");
             this.cache.putResponse("average-graduated", result);
             return result;
         }
     }
 
-    public List<Response> getGraduatedAverageAlt() throws IOException {
+    public List<Response> getGraduatedAverageAlt() throws Exception {
         if (this.cache.contains("average-graduated-alt")) {
             return this.cache.getResponse("average-graduated-alt");
         } else {
-            _initializeScripts();
-            List<Response> result = (List<Response>) script.invokeMethod("getGraduatedAverageAltIndicator", null);
+            List<Response> result = invokeScript("getGraduatedAverageAltIndicator");
             this.cache.putResponse("average-graduated-alt", result);
             return result;
         }
     }
-    public List<Response> getDesertion() throws IOException {
+
+    public List<Response> getDesertion() throws Exception {
         if (this.cache.contains("desertion")) {
             return this.cache.getResponse("desertion");
         } else {
-            _initializeScripts();
-            List<Response> result = (List<Response>) script.invokeMethod("getDesertionDegreeIndicator", null);
+            List<Response> result = invokeScript("getDesertionDegreeIndicator");
             this.cache.putResponse("desertion", result);
             return result;
         }
