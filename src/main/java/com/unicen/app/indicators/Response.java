@@ -38,4 +38,8 @@ public class Response {
         Response other = (Response) o;
         return this.getSchoolId().intValue()==other.getSchoolId().intValue();
     }
+
+    public void setValue(Double value) {
+        this.value = value;
+    }
 }
