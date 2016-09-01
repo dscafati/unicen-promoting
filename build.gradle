@@ -9,6 +9,7 @@ apply plugin: 'eclipse'
 sourceCompatibility = 8
 
 mainClassName = 'com.unicen.app.App'
+applicationDefaultJvmArgs = ["-Xmx3000m"]
 repositories {
     mavenCentral()
 }

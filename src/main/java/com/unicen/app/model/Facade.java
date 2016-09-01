@@ -46,7 +46,7 @@ public class Facade {
     }
 
     private void _initializeCache() throws IOException {
-        this.cache = SimpleDiskCache.open(new File("cache"), 1,262144);
+        this.cache = SimpleDiskCache.open(new File("cache"), 1,60000000);
     }
     private void _initializeScripts() throws IOException {
         if(initializedScriptFlag){
