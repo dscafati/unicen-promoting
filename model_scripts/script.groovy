@@ -9,10 +9,21 @@ import com.unicen.app.indicators.Response
  *
  * Expected methods:
  *
+ * beforeIndicator()
  * getAllAverageIndicator()
+ * getAverageDegreeOfProgressIndicator()
+ * getAverageDegreeDurationIndicator()
+ * getGraduatedAverageIndicator()
+ * getDesertionDegreeIndicator()
+ *
  */
 
-
+/**
+ * This method is called only once, before calling any other metric method
+ * It's pretended to be used for preparing the database, or any other initialization
+ *
+ * @return void
+ */
 def beforeIndicator(){
     // Create a better table for schools
     mysqlDB.execute('''
@@ -79,7 +90,7 @@ def beforeIndicator(){
 
 
 /**
- * Returns the overall average student rate of each school
+ * Returns the overall student rate average for every school
  *
  * @return List<Response>
  */
@@ -98,12 +109,19 @@ def getAllAverageIndicator(){
       GROUP BY e.escuela_id
       ORDER BY prom DESC;
     ''') { row ->
+            def prom = ( row.prom == null ) ?  0 : row.prom ;
             ret.add(new Response(row.colegio, row.nombre, row.prom))
      }
 
      return ret
 }
 
+/**
+ * Get the average degree of progress of the students for every school
+ * The degree of progress is measured as the sum of approved subjects
+ *
+ * @return List<Response>
+ */
 def getAverageDegreeOfProgressIndicator(){
     def ret = new ArrayList<Response>()
     mysqlDB.eachRow('''
@@ -135,8 +153,9 @@ def getAverageDegreeOfProgressIndicator(){
 }
 
 /**
+ * Return the average degree duration of the students of every school
  *
- * @todo get estimated duration of each major
+ * @return List<Response>
  */
 def getAverageDegreeDurationIndicator(){
 
@@ -165,6 +184,12 @@ def getAverageDegreeDurationIndicator(){
     return ret
 }
 
+/**
+ * Get the average student rate, of the graduated students, for every school
+ * This method doen't take into account the exam fails (exams with a result < 4)
+ *
+ * @return List<Response>
+ */
 def getGraduatedAverageIndicator(){
 
     def ret = new ArrayList<Response>()
@@ -191,6 +216,13 @@ def getGraduatedAverageIndicator(){
 
     return ret
 }
+
+/**
+ * Get the average student rate, of the graduated students, for every school
+ * This method takes into account the exam fails (exams with a result < 4)
+ *
+ * @return List<Response>
+ */
 def getGraduatedAverageAltIndicator(){
 
     def ret = new ArrayList<Response>()
@@ -217,11 +249,15 @@ def getGraduatedAverageAltIndicator(){
 
     return ret
 }
+
+/**
+ * Get the amount of student desertors for every school
+ *
+ * @return List<Response>
+ */
 def getDesertionDegreeIndicator(){
 
     def ret = new ArrayList<Response>()
-
-
     mysqlDB.eachRow('''
         SELECT
             e.escuela_id AS colegio,
