@@ -30,7 +30,13 @@ public abstract class Indicator {
 
     public double getMatrixComparisonValue(double value1, double value2) {
     	double matrixValue = 0;
-    	
+
+        if (value1==0.0)
+            value1=1.0;
+
+        if (value2==0.0)
+            value2=1.0;
+
     	if (value1>value2) 
     		matrixValue = value1/value2;
     	else

@@ -3,7 +3,7 @@ package com.unicen.app.indicators;
 import java.util.DoubleSummaryStatistics;
 import java.util.Vector;
 
-public class Response {
+public class Response implements Comparable<Response>{
     private Integer schoolId;
     private String schoolName;
     private Double value;
@@ -37,6 +37,14 @@ public class Response {
     public boolean equals (Object o) {
         Response other = (Response) o;
         return this.getSchoolId().intValue()==other.getSchoolId().intValue();
+    }
+
+    public int compareTo(Response r) {
+        if (this.getSchoolId().intValue() < r.getSchoolId().intValue())
+            return 1;
+        if (this.getSchoolId().intValue() > r.getSchoolId().intValue())
+            return -1;
+        return 0;
     }
 
     public void setValue(Double value) {
