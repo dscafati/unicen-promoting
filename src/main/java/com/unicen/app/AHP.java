@@ -109,8 +109,12 @@ public class AHP {
 		double[][] matrix = new double[n][n];
 		for (int i=0; i<n; i++)
 			for (int j=0; j<n; j++) {
-				double value1 = responses.get(i).getValue().doubleValue();
-				double value2 = responses.get(j).getValue().doubleValue();
+				double value1 = 0.0;
+				double value2 = 0.0;
+				if (responses.get(i).getValue()!=null)
+					value1 = responses.get(i).getValue().doubleValue();
+				if (responses.get(j).getValue()!=null)
+					value2 = responses.get(j).getValue().doubleValue();
 				matrix[i][j] = actualIndicator.getMatrixComparisonValue(value1,value2);
 			}
 		
