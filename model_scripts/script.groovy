@@ -100,17 +100,22 @@ def getAllAverageIndicator(){
 
     mysqlDB.eachRow ('''
       SELECT
-        AVG(h.nota) as prom,
+        sub.prom as prom,
         e.escuela_id as colegio,
         e.nombre
       FROM tmp_escuela e
-      LEFT JOIN tmp_alumno a USING(escuela_id)
-      LEFT JOIN vw_hist_academica h USING(legajo)
-      GROUP BY e.escuela_id
+      LEFT JOIN (
+        SELECT
+            AVG(h.nota) as prom,
+            a.escuela_id
+        FROM vw_hist_academica h
+        JOIN tmp_alumno a ON h.legajo = a.legajo
+        GROUP BY a.escuela_id
+      ) sub ON sub.escuela_id = e.escuela_id
       ORDER BY prom DESC;
     ''') { row ->
             def prom = ( row.prom == null ) ?  0 : row.prom ;
-            ret.add(new Response(row.colegio, row.nombre, row.prom))
+            ret.add(new Response(row.colegio, row.nombre, prom))
      }
 
      return ret
