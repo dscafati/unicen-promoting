@@ -142,7 +142,7 @@
                   <component id="14ba9" class="javax.swing.JTable" binding="mcdmTable" custom-create="true">
                     <constraints/>
                     <properties>
-                      <autoCreateRowSorter value="true"/>
+                      <autoCreateRowSorter value="false"/>
                       <enabled value="false"/>
                       <fillsViewportHeight value="true"/>
                       <showVerticalLines value="false"/>

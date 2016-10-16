@@ -393,7 +393,7 @@ public class MainWindow extends Component {
         mcdmPanel.add(calculateButton, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         mcdmTableContainer = new JScrollPane();
         mcdmPanel.add(mcdmTableContainer, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-        mcdmTable.setAutoCreateRowSorter(true);
+        mcdmTable.setAutoCreateRowSorter(false);
         mcdmTable.setEnabled(false);
         mcdmTable.setFillsViewportHeight(true);
         mcdmTable.setShowVerticalLines(false);
