@@ -44,7 +44,7 @@
                   <component id="8d95c" class="javax.swing.JTable" binding="indicatorsTable" custom-create="true">
                     <constraints/>
                     <properties>
-                      <autoCreateRowSorter value="false"/>
+                      <autoCreateRowSorter value="true"/>
                       <enabled value="false"/>
                       <fillsViewportHeight value="true"/>
                       <showHorizontalLines value="true"/>
@@ -142,6 +142,7 @@
                   <component id="14ba9" class="javax.swing.JTable" binding="mcdmTable" custom-create="true">
                     <constraints/>
                     <properties>
+                      <autoCreateRowSorter value="false"/>
                       <enabled value="false"/>
                       <fillsViewportHeight value="true"/>
                       <showVerticalLines value="false"/>
