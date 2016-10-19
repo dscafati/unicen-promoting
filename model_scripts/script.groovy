@@ -261,8 +261,22 @@ def getGraduatedAverageAltIndicator(){
  * @return List<Response>
  */
 def getDesertionDegreeIndicator(){
-
     def ret = new ArrayList<Response>()
+
+    def nstudents = new HashMap<String,Integer>();
+    mysqlDB.eachRow('''
+            SELECT
+            e.escuela_id as colegio,
+            COUNT(*) as value
+            FROM tmp_escuela e
+            LEFT JOIN tmp_alumno a USING(escuela_id)
+            GROUP BY e.escuela_id;
+        ''') { row ->
+        def value;
+        value = ( row.value == null ) ? 0 : row.value;
+        nstudents.put(row.colegio, value);
+    }
+
     mysqlDB.eachRow('''
         SELECT
             e.escuela_id AS colegio,
@@ -282,8 +296,9 @@ def getDesertionDegreeIndicator(){
         GROUP BY e.escuela_id
         ORDER BY desertors DESC;
     ''') { row ->
-        def desertors = (row.desertors == null ) ? 0 : row.desertors;
-        ret.add(new Response(row.colegio, row.nombre, desertors))
+            def desertors = (row.desertors == null ) ? 0 : row.desertors;
+            def div = (nstudents.get(row.colegio) == 0 ) ? 0 : desertors/nstudents.get(row.colegio);
+            ret.add(new Response(row.colegio, row.nombre, div))
     }
 
     return ret
