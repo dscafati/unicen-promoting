@@ -157,6 +157,7 @@ public class MainWindow extends Component {
             this._showChart();
         });
 
+
         // Initialize checkBoxList
         checkBoxList = new CheckBoxList();
         DefaultListModel checkBoxModel = new DefaultListModel();
@@ -190,7 +191,7 @@ public class MainWindow extends Component {
         // Initialize mcdm Table
         mcdmTable = new JTable();
         DefaultTableModel mcdmTableModel = new DefaultTableModel(new Object[0][], new String[]{
-                "School name", "Value"}) {
+                "School name", "Value (%)"}) {
             Class[] types = {String.class, Double.class};
             boolean[] canEdit = {false, false};
 
@@ -217,7 +218,7 @@ public class MainWindow extends Component {
                 mcdmExportButton.setEnabled(true);
             }
         });
-
+        
 
         // Menu actions
         aboutMenuItem = new JMenuItem();
@@ -280,6 +281,8 @@ public class MainWindow extends Component {
 
             }
 
+
+
         });
     }
 
@@ -309,6 +312,7 @@ public class MainWindow extends Component {
 
         GraphWindow.main(args);
     }
+
 
     public void showAHPResults(List<Indicator> indicators, double[][] indicatorsMatrix) {
         // Limpia la tabla

@@ -191,9 +191,9 @@ public class AHP {
 			calculateVectorForIndicator(i);
 
 
-		//se calcula la decision final y de paso se crea la lista a devolver
+		//se calcula la decision final y se crea la lista a devolver
 		for (Integer id : elements.keySet()) {
-			decision.add(new Decision (id, names.get(id),this.getProbability(id)));
+			decision.add(new Decision (id, names.get(id),this.getProbability(id)*100));
 		}
 
 
