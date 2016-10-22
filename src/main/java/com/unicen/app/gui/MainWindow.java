@@ -179,6 +179,11 @@ public class MainWindow extends Component {
         // Calculate button initialization
         calculateButton = new JButton();
         calculateButton.addActionListener(actionEvent -> {
+            // Limpia la tabla
+            DefaultTableModel model = (DefaultTableModel) mcdmTable.getModel();
+            while (model.getRowCount() > 0) {
+                model.removeRow(0);
+            }
             CheckBoxList lista = (CheckBoxList) checkBoxList;
             if (lista.choosenAmount() > 0) {
                 PairwiseWindow wnd = new PairwiseWindow(this, (CheckBoxList) checkBoxList);
@@ -281,9 +286,9 @@ public class MainWindow extends Component {
 
             }
 
-
-
         });
+
+
     }
 
     private void _showChart() {
@@ -315,21 +320,17 @@ public class MainWindow extends Component {
 
 
     public void showAHPResults(List<Indicator> indicators, double[][] indicatorsMatrix) {
-        // Limpia la tabla
-        DefaultTableModel model = (DefaultTableModel) mcdmTable.getModel();
-        while (model.getRowCount() > 0) {
-            model.removeRow(0);
-        }
-
-
+        mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         // Calcula AHP
         AHP ahp = new AHP(indicators, indicatorsMatrix);
         List<Decision> result = ahp.calculateDecision();
 
         // Muestra la tabla
+        DefaultTableModel model = (DefaultTableModel) mcdmTable.getModel();
         for (Decision d : result) {
             model.addRow(new Object[]{d.getSchoolName(), d.getProbability()});
         }
+        mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
 
     }
