@@ -330,7 +330,7 @@ public class MainWindow extends Component {
         for (Decision d : result) {
             model.addRow(new Object[]{d.getSchoolName(), d.getProbability()});
         }
-        mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 
 
     }
