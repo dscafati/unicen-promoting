@@ -38,6 +38,7 @@ public class MainWindow extends Component {
     private JList indicatorsList;
     private JTable indicatorsTable;
     private DefaultTableModel indicatorsTableModel;
+    private DefaultTableModel mcdmTableModel;
     private JPanel mcdmIndicatorsPanel;
     private JLabel mcdmIndicatorsLabel;
     private JTable mcdmTable;
@@ -154,7 +155,13 @@ public class MainWindow extends Component {
         // Show chart button initialization
         indicatorsShowChartButton = new JButton();
         indicatorsShowChartButton.addActionListener(actionEvent -> {
-            this._showChart();
+            this._showChartIndicators();
+        });
+
+        // Show chart button initialization
+        mcdmShowChartButton = new JButton();
+        mcdmShowChartButton.addActionListener(actionEvent -> {
+            this._showChartMCDM();
         });
 
 
@@ -195,7 +202,7 @@ public class MainWindow extends Component {
 
         // Initialize mcdm Table
         mcdmTable = new JTable();
-        DefaultTableModel mcdmTableModel = new DefaultTableModel(new Object[0][], new String[]{
+        mcdmTableModel = new DefaultTableModel(new Object[0][], new String[]{
                 "School name", "Value (%)"}) {
             Class[] types = {String.class, Double.class};
             boolean[] canEdit = {false, false};
@@ -223,7 +230,7 @@ public class MainWindow extends Component {
                 mcdmExportButton.setEnabled(true);
             }
         });
-        
+
 
         // Menu actions
         aboutMenuItem = new JMenuItem();
@@ -289,9 +296,81 @@ public class MainWindow extends Component {
         });
 
 
+        mcdmExportButton = new JButton();
+        mcdmExportButton.addActionListener(actionEvent -> {
+
+            int returnVal = fc.showSaveDialog(this);
+
+            class DataType {
+                public String name;
+                public Double value;
+            }
+
+            ArrayList<DataType> export = new ArrayList<DataType>();
+
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                File outputFile = fc.getSelectedFile();
+
+                for (int i = 0; i < mcdmTable.getRowCount(); i++) {
+                    Integer sortIndex = mcdmTable.getRowSorter().convertRowIndexToModel(i);
+
+                    DataType row = new DataType();
+                    row.name = (String) mcdmTableModel.getValueAt(sortIndex, 0);
+                    row.value = (Double) mcdmTableModel.getValueAt(sortIndex, 1);
+                    export.add(row);
+
+                }
+
+                // Export as CSV
+                CsvMapper mapper = new CsvMapper();
+                CsvSchema schema = mapper.schemaFor(DataType.class);
+                schema = schema.withColumnSeparator('\t');
+
+                // output writer
+                ObjectWriter myObjectWriter = mapper.writer(schema);
+                try {
+                    FileOutputStream tempFileOutputStream = new FileOutputStream(outputFile);
+                    BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(tempFileOutputStream, 1024);
+                    OutputStreamWriter writerOutputStream = new OutputStreamWriter(bufferedOutputStream, "UTF-8");
+                    myObjectWriter.writeValue(writerOutputStream, export);
+                } catch (Exception e) {
+                    App.throwError(e);
+                }
+
+            }
+
+        });
+
+
     }
 
-    private void _showChart() {
+    private void _showChartMCDM() {
+
+        ArrayList<ArrayList<Object>> dataAsBeingShown = new ArrayList<ArrayList<Object>>();
+        // Get sorted data
+        for (int i = 0; i < Math.min(10, mcdmTable.getRowCount()); i++) {
+            // Get original index on the model
+            Integer originalIndex = mcdmTable.getRowSorter().convertRowIndexToModel(i);
+
+            // Get each cell of this row
+            ArrayList<Object> row = new ArrayList<Object>();
+            for (int c = 0; c < mcdmTableModel.getColumnCount(); c++) {
+                row.add(mcdmTableModel.getValueAt(originalIndex, c));
+            }
+            dataAsBeingShown.add(row);
+        }
+
+        Gson gsonData = new Gson();
+
+        String[] args = new String[]{
+                null,
+                gsonData.toJson(dataAsBeingShown)
+        };
+
+        GraphWindow.main(args);
+    }
+
+    private void _showChartIndicators() {
 
 
         ArrayList<ArrayList<Object>> dataAsBeingShown = new ArrayList<ArrayList<Object>>();
@@ -398,7 +477,7 @@ public class MainWindow extends Component {
         mcdmPanel.add(calculateButton, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         mcdmTableContainer = new JScrollPane();
         mcdmPanel.add(mcdmTableContainer, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-        mcdmTable.setAutoCreateRowSorter(false);
+        mcdmTable.setAutoCreateRowSorter(true);
         mcdmTable.setEnabled(false);
         mcdmTable.setFillsViewportHeight(true);
         mcdmTable.setShowVerticalLines(false);
@@ -406,7 +485,6 @@ public class MainWindow extends Component {
         final JPanel panel2 = new JPanel();
         panel2.setLayout(new GridLayoutManager(1, 3, new Insets(0, 0, 0, 0), -1, -1));
         mcdmPanel.add(panel2, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        mcdmShowChartButton = new JButton();
         mcdmShowChartButton.setEnabled(false);
         mcdmShowChartButton.setText("Show Chart");
         mcdmShowChartButton.setMnemonic('S');
@@ -414,7 +492,6 @@ public class MainWindow extends Component {
         panel2.add(mcdmShowChartButton, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_EAST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final Spacer spacer2 = new Spacer();
         panel2.add(spacer2, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
-        mcdmExportButton = new JButton();
         mcdmExportButton.setEnabled(false);
         mcdmExportButton.setText("Export");
         mcdmExportButton.setMnemonic('E');

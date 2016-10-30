@@ -59,7 +59,7 @@ public class GraphWindow {
         }
 
         return ChartFactory.createPieChart3D(
-                Factory.get(GraphWindow.indicator).getName(),
+                ( GraphWindow.indicator == null ) ? "AHP" : Factory.get(GraphWindow.indicator).getName(),
                 dataset,
                 true,
                 true,
@@ -75,7 +75,7 @@ public class GraphWindow {
         HashMap<String, Object> atts = Factory.get(GraphWindow.indicator).getExtraGraphData();
 
         return ChartFactory.createBarChart3D(
-                Factory.get(GraphWindow.indicator).getName(),
+                ( GraphWindow.indicator == null ) ? "AHP" : Factory.get(GraphWindow.indicator).getName(),
                 (String) atts.get("horizontal_axis_label"),
                 (String) atts.get("vertical_axis_label"),
                 dataset,
@@ -87,14 +87,18 @@ public class GraphWindow {
     }
 
     private void createUIComponents() {
-        switch (Factory.get(GraphWindow.indicator).getGraphType()) {
-            case Indicator.AS_PIE:
-                chartPanel = new ChartPanel(_drawAsPie());
-                break;
-            case Indicator.AS_BAR:
-            default:
-                chartPanel = new ChartPanel(_drawAsBar());
-                break;
+        if( GraphWindow.indicator == null ){
+            chartPanel = new ChartPanel(_drawAsPie());
+        }else{
+            switch (Factory.get(GraphWindow.indicator).getGraphType()) {
+                case Indicator.AS_PIE:
+                    chartPanel = new ChartPanel(_drawAsPie());
+                    break;
+                case Indicator.AS_BAR:
+                default:
+                    chartPanel = new ChartPanel(_drawAsBar());
+                    break;
+            }
         }
     }
 
