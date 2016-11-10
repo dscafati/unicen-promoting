@@ -16,6 +16,18 @@ repositories {
 sourceSets {
     main.java.srcDir "src/main/java"
 }
+
+//create a single Jar with all dependencies
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'Unicen Promoting',
+                'Implementation-Version': '1.0',
+                'Main-Class': 'com.unicen.app.App'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
     compile group: 'com.ibm.informix', name: 'jdbc', version: '4.10.7.20160517'

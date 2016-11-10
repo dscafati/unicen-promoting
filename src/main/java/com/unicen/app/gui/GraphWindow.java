@@ -30,11 +30,6 @@ import java.util.List;
 public class GraphWindow {
     private ChartPanel chartPanel;
     private JPanel graphPanel;
-    private JMenuBar menuBar;
-    private JMenu fileMenu;
-    private JMenu aboutMenuItem;
-    private JMenuItem exportMenuItem;
-    private JMenu helpMenu;
 
     private static Object[][] data;
     private static String indicator;
@@ -59,7 +54,7 @@ public class GraphWindow {
         }
 
         return ChartFactory.createPieChart3D(
-                ( GraphWindow.indicator == null ) ? "AHP" : Factory.get(GraphWindow.indicator).getName(),
+                (GraphWindow.indicator == null) ? "AHP" : Factory.get(GraphWindow.indicator).getName(),
                 dataset,
                 true,
                 true,
@@ -75,7 +70,7 @@ public class GraphWindow {
         HashMap<String, Object> atts = Factory.get(GraphWindow.indicator).getExtraGraphData();
 
         return ChartFactory.createBarChart3D(
-                ( GraphWindow.indicator == null ) ? "AHP" : Factory.get(GraphWindow.indicator).getName(),
+                (GraphWindow.indicator == null) ? "AHP" : Factory.get(GraphWindow.indicator).getName(),
                 (String) atts.get("horizontal_axis_label"),
                 (String) atts.get("vertical_axis_label"),
                 dataset,
@@ -87,9 +82,9 @@ public class GraphWindow {
     }
 
     private void createUIComponents() {
-        if( GraphWindow.indicator == null ){
+        if (GraphWindow.indicator == null) {
             chartPanel = new ChartPanel(_drawAsPie());
-        }else{
+        } else {
             switch (Factory.get(GraphWindow.indicator).getGraphType()) {
                 case Indicator.AS_PIE:
                     chartPanel = new ChartPanel(_drawAsPie());
@@ -120,33 +115,6 @@ public class GraphWindow {
         createUIComponents();
         graphPanel = new JPanel();
         graphPanel.setLayout(new BorderLayout(0, 0));
-        menuBar = new JMenuBar();
-        menuBar.setLayout(new GridLayoutManager(1, 3, new Insets(0, 0, 0, 0), -1, -1));
-        graphPanel.add(menuBar, BorderLayout.NORTH);
-        fileMenu = new JMenu();
-        fileMenu.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-        fileMenu.setText("File");
-        fileMenu.setMnemonic('F');
-        fileMenu.setDisplayedMnemonicIndex(0);
-        menuBar.add(fileMenu, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        exportMenuItem = new JMenuItem();
-        exportMenuItem.setText("Export Image");
-        exportMenuItem.setMnemonic('E');
-        exportMenuItem.setDisplayedMnemonicIndex(0);
-        fileMenu.add(exportMenuItem);
-        final Spacer spacer1 = new Spacer();
-        menuBar.add(spacer1, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
-        helpMenu = new JMenu();
-        helpMenu.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-        helpMenu.setText("Help");
-        helpMenu.setMnemonic('H');
-        helpMenu.setDisplayedMnemonicIndex(0);
-        menuBar.add(helpMenu, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        aboutMenuItem = new JMenu();
-        aboutMenuItem.setText("About");
-        aboutMenuItem.setMnemonic('A');
-        aboutMenuItem.setDisplayedMnemonicIndex(0);
-        helpMenu.add(aboutMenuItem);
         chartPanel.setDomainZoomable(true);
         graphPanel.add(chartPanel, BorderLayout.CENTER);
     }
