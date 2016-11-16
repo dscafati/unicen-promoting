@@ -1,6 +1,6 @@
 package com.unicen.app.indicators;
 
-import com.unicen.app.ahp.HigherCriterion;
+import com.unicen.app.ahp.LowerCriterion;
 import com.unicen.app.model.Facade;
 
 import java.util.HashMap;
@@ -13,7 +13,7 @@ public class DesertionIndicator extends Indicator {
 
     public DesertionIndicator() {
         this.setName("Desertion degree");
-        this.setCriterion(new HigherCriterion());
+        this.setCriterion(new LowerCriterion());
     }
 
     public List<Response> evaluateAll() throws Exception {

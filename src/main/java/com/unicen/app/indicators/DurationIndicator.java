@@ -1,6 +1,7 @@
 package com.unicen.app.indicators;
 
-import com.unicen.app.ahp.HigherCriterion;
+
+import com.unicen.app.ahp.LowerCriterion;
 import com.unicen.app.model.Facade;
 
 import java.util.HashMap;
@@ -13,7 +14,7 @@ public class DurationIndicator extends Indicator {
 
     public DurationIndicator() {
         this.setName("Major Duration");
-        this.setCriterion(new HigherCriterion());
+        this.setCriterion(new LowerCriterion());
     }
 
     public List<Response> evaluateAll() throws Exception {
