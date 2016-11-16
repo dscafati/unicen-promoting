@@ -103,8 +103,8 @@ def getAllAverageIndicator(){
       SELECT
         sub.prom as prom,
         e.escuela_id as colegio,
-        e.localidad as localidad
-        e.nombre
+        e.localidad as localidad,
+        e.nombre as nombre
       FROM tmp_escuela e
       LEFT JOIN (
         SELECT
