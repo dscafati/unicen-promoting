@@ -6,11 +6,13 @@ import java.util.Vector;
 public class Response implements Comparable<Response>{
     private Integer schoolId;
     private String schoolName;
+    private String cityName;
     private Double value;
 
-    public Response(Integer schoolId, String schoolName, Double value) {
+    public Response(Integer schoolId, String schoolName, String cityName, Double value) {
         this.schoolId = schoolId;
         this.schoolName = schoolName;
+        this.cityName = cityName;
         this.value = value;
     }
 
@@ -22,6 +24,8 @@ public class Response implements Comparable<Response>{
         return schoolName;
     }
 
+    public String getCityName() { return cityName; }
+
     public Double getValue() {
         return value;
     }
@@ -29,6 +33,7 @@ public class Response implements Comparable<Response>{
     public Vector<Object> asVector(){
         Vector<Object> v = new Vector<>();
         v.add(this.getSchoolName());
+        v.add(this.getCityName());
         v.add(this.getValue());
         return v;
     }

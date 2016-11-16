@@ -29,13 +29,14 @@ def beforeIndicator(){
     mysqlDB.execute('''
            CREATE TEMPORARY TABLE `tmp_escuela` (
             `escuela_id` INT(11) NOT NULL,
-             `nombre` VARCHAR(255) NOT NULL
+             `nombre` VARCHAR(255) NOT NULL,
+             `localidad` VARCHAR(255) NOT NULL
              );
     ''')
     // Populate only with schools from Argentina
     mysqlDB.execute('''
             INSERT INTO tmp_escuela
-                SELECT c.colegio AS escuela_id, c.nombre AS nombre
+                SELECT c.colegio AS escuela_id, c.nombre AS nombre, l.nombre as localidad
                 FROM sga_coleg_sec c
                 JOIN mug_localidades l ON l.localidad = c.localidad
                 JOIN mug_dptos_partidos d ON d.dpto_partido = l.dpto_partido
@@ -102,6 +103,7 @@ def getAllAverageIndicator(){
       SELECT
         sub.prom as prom,
         e.escuela_id as colegio,
+        e.localidad as localidad
         e.nombre
       FROM tmp_escuela e
       LEFT JOIN (
@@ -115,7 +117,7 @@ def getAllAverageIndicator(){
       ORDER BY prom DESC;
     ''') { row ->
             def prom = ( row.prom == null ) ?  0 : row.prom ;
-            ret.add(new Response(row.colegio, row.nombre, prom))
+            ret.add(new Response(row.colegio, row.nombre, row.localidad, prom))
      }
 
      return ret
@@ -132,6 +134,7 @@ def getAverageDegreeOfProgressIndicator(){
     mysqlDB.eachRow('''
         SELECT
             e.escuela_id,
+            e.localidad,
             e.nombre,
             COUNT(*) as nstudents,
             SUM(sub.approved) as napproved
@@ -151,7 +154,7 @@ def getAverageDegreeOfProgressIndicator(){
             def num = (row.napproved == null) ? 0 : row.napproved
             def div = (row.nstudents > 0) ? (num / row.nstudents) : 0
 
-            ret.add(new Response(row.escuela_id, row.nombre, div))
+            ret.add(new Response(row.escuela_id, row.nombre, row.localidad, div))
     }
 
     return ret
@@ -170,6 +173,7 @@ def getAverageDegreeDurationIndicator(){
         SELECT
             e.escuela_id AS colegio,
             e.nombre AS nombre,
+            e.localidad AS localidad,
             sub.duration AS duration
         FROM tmp_escuela e
         LEFT JOIN (
@@ -183,7 +187,7 @@ def getAverageDegreeDurationIndicator(){
         ORDER BY duration DESC;
     ''') { row ->
         def duration = (row.duration == null ) ? 0 : row.duration
-        ret.add(new Response(row.colegio, row.nombre, duration))
+        ret.add(new Response(row.colegio, row.nombre, row.localidad, duration))
     }
 
     return ret
@@ -203,6 +207,7 @@ def getGraduatedAverageIndicator(){
         SELECT
             e.escuela_id AS colegio,
             e.nombre AS nombre,
+            e.localidad AS localidad,
             sub.prom AS prom
         FROM tmp_escuela e
         LEFT JOIN (
@@ -216,7 +221,7 @@ def getGraduatedAverageIndicator(){
         ORDER BY prom DESC;
     ''') { row ->
         def prom = (row.prom == null ) ? 0 : row.prom;
-        ret.add(new Response(row.colegio, row.nombre, prom))
+        ret.add(new Response(row.colegio, row.nombre, row.localidad, prom))
     }
 
     return ret
@@ -236,6 +241,7 @@ def getGraduatedAverageAltIndicator(){
         SELECT
             e.escuela_id AS colegio,
             e.nombre AS nombre,
+            e.localidad AS localidad,
             sub.prom AS prom
         FROM tmp_escuela e
         LEFT JOIN (
@@ -249,7 +255,7 @@ def getGraduatedAverageAltIndicator(){
         ORDER BY prom DESC;
     ''') { row ->
         def prom = (row.prom == null ) ? 0 : row.prom;
-        ret.add(new Response(row.colegio, row.nombre, prom))
+        ret.add(new Response(row.colegio, row.nombre, row.localidad, prom))
     }
 
     return ret
@@ -281,6 +287,7 @@ def getDesertionDegreeIndicator(){
         SELECT
             e.escuela_id AS colegio,
             e.nombre AS nombre,
+            e.localidad AS localidad,
             COUNT(*) AS desertors
         FROM tmp_escuela e
         LEFT JOIN (
@@ -298,7 +305,7 @@ def getDesertionDegreeIndicator(){
     ''') { row ->
             def desertors = (row.desertors == null ) ? 0 : row.desertors;
             def div = (nstudents.get(row.colegio) == 0 ) ? 0 : desertors/nstudents.get(row.colegio);
-            ret.add(new Response(row.colegio, row.nombre, div))
+            ret.add(new Response(row.colegio, row.localidad, row.nombre, div))
     }
 
     return ret

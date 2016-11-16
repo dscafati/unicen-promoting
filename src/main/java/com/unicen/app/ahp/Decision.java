@@ -3,12 +3,14 @@ package com.unicen.app.ahp;
 
 public class Decision implements Comparable<Decision> {
 	private String schoolName;
+	private String cityName;
 	private Integer schoolId;
 	private double probability;
 	
-	public Decision (Integer schoolId, String schoolName,double probability) {
+	public Decision (Integer schoolId, String schoolName, String cityName, double probability) {
 		this.setSchoolId(schoolId);
 		this.setSchoolName(schoolName);
+		this.setCityName(cityName);
 		this.setProbability(probability);
 	}
 
@@ -26,6 +28,13 @@ public class Decision implements Comparable<Decision> {
 
 	public void setProbability(double probability) {
 		this.probability = probability;
+	}
+
+	public void setCityName(String cityName) {
+		this.cityName = cityName;
+	}
+	public String getCityName() {
+		return this.cityName;
 	}
 
 	@Override

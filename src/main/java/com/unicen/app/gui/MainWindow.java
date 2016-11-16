@@ -69,8 +69,8 @@ public class MainWindow extends Component {
         // Initialize right-side table
         indicatorsTable = new JTable();
         indicatorsTableModel = new DefaultTableModel(new Object[0][], new String[]{
-                "School name", "Value"}) {
-            Class[] types = {String.class, Double.class};
+                "School name", "City", "Value"}) {
+            Class[] types = {String.class,String.class, Double.class};
             boolean[] canEdit = {false, false};
 
             @Override
@@ -203,8 +203,8 @@ public class MainWindow extends Component {
         // Initialize mcdm Table
         mcdmTable = new JTable();
         mcdmTableModel = new DefaultTableModel(new Object[0][], new String[]{
-                "School name", "Value (%)"}) {
-            Class[] types = {String.class, Double.class};
+                "School name", "City", "Value (%)"}) {
+            Class[] types = {String.class,String.class, Double.class};
             boolean[] canEdit = {false, false};
 
             @Override
@@ -407,7 +407,7 @@ public class MainWindow extends Component {
         // Muestra la tabla
         DefaultTableModel model = (DefaultTableModel) mcdmTable.getModel();
         for (Decision d : result) {
-            model.addRow(new Object[]{d.getSchoolName(), d.getProbability()});
+            model.addRow(new Object[]{d.getSchoolName(), d.getCityName(), d.getProbability()});
         }
         mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 

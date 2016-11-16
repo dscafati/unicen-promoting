@@ -21,6 +21,7 @@ public class AHP {
 	
 	private HashMap <Integer, ArrayList<Double>> elements = new HashMap<Integer,ArrayList<Double>>();
 	private HashMap <Integer, String> names = new HashMap<Integer,String>();
+	private HashMap <Integer, String> cities = new HashMap<Integer,String>();
 	private List<Indicator> indicators = new ArrayList<Indicator>();
 	private double[] indicatorsPriorityVector;
 	
@@ -81,6 +82,7 @@ public class AHP {
 		for (Response r : responses) {
 			elements.put (r.getSchoolId(), new ArrayList<Double>());
 			names.put(r.getSchoolId(), r.getSchoolName());
+			cities.put(r.getSchoolId(), r.getCityName());
 		}
 
 	}
@@ -193,7 +195,7 @@ public class AHP {
 
 		//se calcula la decision final y se crea la lista a devolver
 		for (Integer id : elements.keySet()) {
-			decision.add(new Decision (id, names.get(id),this.getProbability(id)*100));
+			decision.add(new Decision (id, names.get(id), cities.get(id), this.getProbability(id)*100));
 		}
 
 
