@@ -305,7 +305,7 @@ def getDesertionDegreeIndicator(){
     ''') { row ->
             def desertors = (row.desertors == null ) ? 0 : row.desertors;
             def div = (nstudents.get(row.colegio) == 0 ) ? 0 : desertors/nstudents.get(row.colegio);
-            ret.add(new Response(row.colegio, row.localidad, row.nombre, div))
+            ret.add(new Response(row.colegio, row.nombre, row.localidad, div))
     }
 
     return ret
