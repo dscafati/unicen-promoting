@@ -50,7 +50,7 @@ public class GraphWindow {
     private JFreeChart _drawAsPie() {
         DefaultPieDataset dataset = new DefaultPieDataset();
         for (Object[] row : GraphWindow.data) {
-            dataset.setValue((String) row[0], ((BigDecimal) row[1]).doubleValue());
+            dataset.setValue((String) row[0], ((BigDecimal) row[2]).doubleValue());
         }
 
         return ChartFactory.createPieChart3D(
@@ -65,7 +65,7 @@ public class GraphWindow {
     private JFreeChart _drawAsBar() {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for (Object[] row : GraphWindow.data) {
-            dataset.addValue(((BigDecimal) row[1]).doubleValue(), (String) row[0], "");
+            dataset.addValue(((BigDecimal) row[2]).doubleValue(), (String) row[0], "");
         }
         HashMap<String, Object> atts = Factory.get(GraphWindow.indicator).getExtraGraphData();
 
